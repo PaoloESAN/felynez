@@ -1,0 +1,354 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CatViewer from "../components/CatViewer.astro";
+import GatoClicker from "../components/GatoClicker.astro";
+---
+
+<Layout title="Felynez — clicker antiestrés 3D y portacelular gatuno">
+  <div class="relative min-h-screen overflow-clip bg-[#f6ecdd] text-[#3b2a1e]">
+    <!-- ambiente claro -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+      <div class="absolute -top-32 -left-32 h-[480px] w-[480px] rounded-full bg-[#ffd9e4]/60 blur-[120px]"></div>
+      <div class="absolute top-40 -right-40 h-[520px] w-[520px] rounded-full bg-[#e3d9ff]/60 blur-[130px]"></div>
+      <div class="absolute bottom-0 left-1/3 h-[380px] w-[380px] rounded-full bg-[#ffe6bd]/70 blur-[110px]"></div>
+      <div class="huellas absolute inset-0 opacity-70"></div>
+    </div>
+
+    <!-- NAV -->
+    <header class="relative z-20 mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 pt-6 md:px-8">
+      <a href="/" class="flex min-w-0 items-center gap-3">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#3b2a1e] text-2xl shadow-[0_10px_30px_rgba(59,42,30,.3)]">🐱</span>
+        <span class="leading-none">
+          <span class="font-display block text-2xl font-semibold tracking-tight">Felynez</span>
+          <span class="block text-xs font-bold tracking-[0.22em] text-[#3b2a1e]/55">JUGUETES 3D</span>
+        </span>
+      </a>
+      <nav class="hidden items-center gap-7 text-sm font-bold text-[#3b2a1e]/70 md:flex">
+        <a href="#manada" class="transition hover:text-[#3b2a1e]">Los michis</a>
+        <a href="#visor" class="transition hover:text-[#3b2a1e]">Pruébalo</a>
+        <a href="#como-funciona" class="transition hover:text-[#3b2a1e]">Cómo funciona</a>
+        <a href="#preguntas" class="transition hover:text-[#3b2a1e]">Preguntas</a>
+      </nav>
+      <div class="flex shrink-0 items-center gap-3">
+        <a href="#manada" class="hidden rounded-full border border-[#3b2a1e]/15 bg-white/60 px-5 py-2.5 text-sm font-extrabold backdrop-blur transition hover:bg-white sm:block">
+          Ver michis
+        </a>
+        <a href="#pedido" class="rounded-full bg-[#ff5c8a] px-5 py-2.5 text-sm font-extrabold text-white shadow-[0_12px_32px_rgba(255,92,138,.4)] transition hover:brightness-110 active:scale-95">
+          Pedir el mío
+        </a>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section id="visor" class="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-5 pt-12 pb-10 md:grid-cols-[1.05fr_.95fr] md:px-8 md:pt-16">
+      <div>
+        <h1 class="font-display text-balance mt-2 text-5xl leading-[0.95] font-semibold tracking-tight md:text-7xl">
+          Un gato antiestrés<br />
+          <span class="relative inline-block text-[#ff5c8a]">
+            que salta
+            <svg viewBox="0 0 220 22" class="absolute -bottom-2 left-0 w-full" fill="none" aria-hidden="true">
+              <path d="M4 15 C 60 6, 150 6, 216 12" stroke="#e8930c" stroke-width="7" stroke-linecap="round" />
+            </svg>
+          </span><br />
+          de su cajita.
+        </h1>
+
+        <p class="mt-7 max-w-md text-lg leading-relaxed text-[#3b2a1e]/70">
+          Somos <strong class="text-[#3b2a1e]">Felynez</strong> y hacemos juguetes gatunos en 3D.
+          Clickea al michi de aquí abajo: se esconde en su caja, salta a saludarte y cuenta tus caricias.
+          Y si necesitas recostar tu celular, su hermanito portacelular lo sostiene por ti.
+        </p>
+
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="#manada" class="rounded-full bg-[#3b2a1e] px-7 py-3.5 font-display text-lg font-semibold text-[#fff8ee] shadow-[0_16px_40px_rgba(59,42,30,.25)] transition hover:-translate-y-0.5">
+            Ver los dos michis
+          </a>
+          <a href="#como-funciona" class="rounded-full border border-[#3b2a1e]/15 bg-white/60 px-7 py-3.5 font-display text-lg font-semibold backdrop-blur transition hover:bg-white">
+            Cómo funciona
+          </a>
+        </div>
+
+        <dl class="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+          <div>
+            <dt class="font-display text-3xl font-semibold text-[#d97706]">2</dt>
+            <dd class="text-sm font-bold text-[#3b2a1e]/60">modelos: clicker y portacelular</dd>
+          </div>
+          <div>
+            <dt class="font-display text-3xl font-semibold text-[#d97706]">PLA+</dt>
+            <dd class="text-sm font-bold text-[#3b2a1e]/60">filamento PLA+ premium, bordes suaves</dd>
+          </div>
+          <div>
+            <dt class="font-display text-3xl font-semibold text-[#d97706]">48 h</dt>
+            <dd class="text-sm font-bold text-[#3b2a1e]/60">envío a todo el país</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- HERO 3D : clicker -->
+      <div class="relative">
+        <div class="grano relative overflow-hidden rounded-[32px] border border-[#3b2a1e]/10 bg-white p-3 shadow-[0_30px_90px_rgba(59,42,30,.18)]">
+          <div class="flex items-center justify-between px-3 pt-2 pb-3">
+            <span class="text-xs font-bold text-[#3b2a1e]/60">Mishi Clicker · pruébalo aquí</span>
+            <div class="font-display text-xs font-semibold text-[#d63a68]">★ clickea al gato</div>
+          </div>
+
+          <GatoClicker cajaSrc="/models/gato1-caja.glb" gatoSrc="/models/gato1-gato.glb" nombre="Mishi" />
+
+          <div class="flex items-center justify-between gap-3 px-3 py-3">
+            <div class="flex -space-x-3">
+              <span class="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-[#ff8fb0] text-lg">🐈</span>
+              <span class="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-[#7c5cff] text-lg">🐈‍⬛</span>
+              <span class="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-[#f6ecdd] text-xs font-extrabold text-[#3b2a1e]">+2k</span>
+            </div>
+            <p class="text-xs font-bold text-[#3b2a1e]/55">Más de 2,000 caricias contadas esta semana</p>
+          </div>
+        </div>
+
+        <!-- sticker flotante (solo escritorio para no tapar nada) -->
+        <div class="font-display absolute top-40 right-0 hidden rounded-2xl border border-[#3b2a1e]/10 bg-white px-4 py-3 text-[#3b2a1e] shadow-xl animate-flota md:block lg:-right-8">
+          <p class="text-xs font-bold opacity-60">incluye</p>
+          <p class="text-lg font-semibold">Caja + gato 📦</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUESINA -->
+    <div class="relative z-10 -rotate-1 border-y-2 border-[#3b2a1e] bg-[#ffb84d] py-3 text-[#3b2a1e] shadow-[0_10px_40px_rgba(232,147,12,.25)]">
+      <div class="flex w-max animate-marquee gap-8 pr-8 font-display text-lg font-semibold whitespace-nowrap">
+        <span>clic clic clic 🐾</span><span>·</span><span>antiestrés garantizado 😌</span><span>·</span>
+        <span>recuesta tu celular 📱</span><span>·</span><span>impreso en 3D 🖨️</span><span>·</span>
+        <span>regalo perfecto 🎁</span><span>·</span><span>hecho con amor 💛</span><span>·</span>
+        <span>clic clic clic 🐾</span><span>·</span><span>antiestrés garantizado 😌</span><span>·</span>
+        <span>recuesta tu celular 📱</span><span>·</span><span>impreso en 3D 🖨️</span><span>·</span>
+        <span>regalo perfecto 🎁</span><span>·</span><span>hecho con amor 💛</span><span>·</span>
+      </div>
+    </div>
+
+    <!-- PRODUCTOS -->
+    <section id="manada" class="relative z-10 mx-auto max-w-6xl px-5 py-20 md:px-8">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div class="max-w-xl">
+          <p class="font-display inline-block rounded-full border border-[#ff5c8a]/30 bg-[#ff5c8a]/10 px-4 py-1.5 text-sm font-semibold text-[#d63a68]">Los dos michis</p>
+          <h2 class="font-display text-balance mt-4 text-4xl font-semibold tracking-tight md:text-6xl">Uno se esconde, el otro sostiene tu celular</h2>
+        </div>
+        <p class="max-w-sm text-[#3b2a1e]/65">Juguetes de escritorio impresos en 3D. Gíralos, clickea al de la caja y elige cuál se va contigo.</p>
+      </div>
+
+      <div class="mt-12 grid gap-8 md:grid-cols-2">
+        <!-- Producto 1 : clicker caja + gato -->
+        <article class="arco-gato group relative overflow-hidden border border-[#3b2a1e]/10 bg-white p-4 pt-6 text-[#3b2a1e] shadow-[0_30px_80px_rgba(59,42,30,.18)]">
+          <div class="px-4 text-center">
+            <p class="inline-block rounded-full bg-[#3b2a1e] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#ffb84d]">CLICKER ANTIESTRÉS</p>
+            <h3 class="font-display mt-3 text-4xl font-semibold">Mishi en su Caja</h3>
+            <p class="mt-1 min-h-[2.75rem] font-bold text-[#3b2a1e]/60">Gato + caja · lo clickeas, se esconde y salta</p>
+          </div>
+
+          <div class="mt-5 overflow-hidden rounded-[24px]">
+            <GatoClicker cajaSrc="/models/gato1-caja.glb" gatoSrc="/models/gato1-gato.glb" nombre="Mishi" alto="h-[360px] md:h-[420px]" />
+          </div>
+
+          <div class="flex flex-wrap gap-2 px-2 pt-5">
+            <span class="rounded-full border border-[#3b2a1e]/10 bg-[#f6ecdd] px-3 py-1.5 text-xs font-extrabold">📦 se esconde y salta</span>
+            <span class="rounded-full border border-[#3b2a1e]/10 bg-[#f6ecdd] px-3 py-1.5 text-xs font-extrabold">😌 clic satisfactorio</span>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-4 px-3 pt-6 pb-3">
+            <div>
+              <p class="text-xs font-extrabold tracking-widest text-[#3b2a1e]/50">CAJA + GATO</p>
+              <p class="font-display text-3xl font-semibold">S/ 7</p>
+              <p class="text-xs font-bold text-[#3b2a1e]/55">con calcomanías de regalo</p>
+            </div>
+            <a href="#pedido" class="rounded-full bg-[#3b2a1e] px-6 py-3.5 font-display font-semibold text-[#fff8ee] transition group-hover:bg-[#ff5c8a] group-hover:text-white">Lo quiero</a>
+          </div>
+        </article>
+
+        <!-- Producto 2 : portacelular -->
+        <article class="arco-gato relative overflow-hidden border border-[#3b2a1e]/10 bg-white p-4 pt-6 text-[#3b2a1e] shadow-[0_30px_80px_rgba(59,42,30,.18)]">
+          <div class="px-4 text-center">
+            <p class="inline-block rounded-full bg-[#ffb84d] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#3b2a1e]">PORTACELULAR</p>
+            <h3 class="font-display mt-3 text-4xl font-semibold">Mishi Portacelular</h3>
+            <p class="mt-1 min-h-[2.75rem] font-bold text-[#3b2a1e]/60">Recuesta tu teléfono en su pancita y mira series con él</p>
+          </div>
+
+          <div class="mt-5 overflow-hidden rounded-[24px]">
+            <CatViewer src="/models/gato2-portacelular.glb" nombre="Mishi Portacelular" alto="h-[360px] md:h-[420px]" />
+          </div>
+
+          <div class="flex flex-wrap gap-2 px-2 pt-5">
+            <span class="rounded-full border border-[#3b2a1e]/10 bg-[#f6ecdd] px-3 py-1.5 text-xs font-extrabold">😴 ángulo perfecto para series</span>
+            <span class="rounded-full border border-[#3b2a1e]/10 bg-[#f6ecdd] px-3 py-1.5 text-xs font-extrabold">🎁 regalo perfecto</span>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-4 px-3 pt-6 pb-3">
+            <div>
+              <p class="font-display text-3xl font-semibold">S/ 10</p>
+              <p class="text-xs font-bold text-[#3b2a1e]/55">con calcomanías de regalo</p>
+            </div>
+            <a href="#pedido" class="rounded-full bg-[#3b2a1e] px-6 py-3.5 font-display font-semibold text-[#fff8ee] transition hover:bg-[#ff5c8a] hover:text-white">Lo quiero</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- POR QUÉ -->
+    <section class="relative z-10 border-y border-[#3b2a1e]/10 bg-white/50 py-16 backdrop-blur">
+      <div class="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-[.9fr_1.1fr] md:px-8">
+        <div>
+          <h2 class="font-display text-balance text-4xl font-semibold md:text-5xl">Un taller, no una tienda</h2>
+          <p class="mt-4 leading-relaxed text-[#3b2a1e]/65">
+            Diseñamos cada michi en 3D, lo imprimimos con filamento premium y lo revisamos pieza por pieza.
+            Salen del taller suavecitos, sin rebabas y listos para tu escritorio.
+          </p>
+          <div class="mt-6 flex items-center gap-4 rounded-2xl border border-[#0b7a55]/25 bg-[#0b7a55]/10 p-4">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#0b7a55] text-2xl">🖨️</span>
+            <p class="text-sm leading-relaxed"><strong>Calidad primero:</strong> bordes suaves, colores firmes y control pieza por pieza. Si no pasa la revisión, el michi no viaja.</p>
+          </div>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-3">
+          <div class="rounded-3xl border border-[#3b2a1e]/10 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <div class="text-4xl">😌</div>
+            <h3 class="font-display mt-4 text-xl font-semibold">Antiestrés real</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">El clic del gatito es adictivo. Para juntas largas, tráfico mental y tardes de tarea.</p>
+          </div>
+          <div class="rounded-3xl border border-[#3b2a1e]/10 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <div class="text-4xl">📱</div>
+            <h3 class="font-display mt-4 text-xl font-semibold">Manos libres</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">El portacelular sostiene tu teléfono con el ángulo justo para series y videollamadas.</p>
+          </div>
+          <div class="rounded-3xl border border-[#3b2a1e]/10 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <div class="text-4xl">💌</div>
+            <h3 class="font-display mt-4 text-xl font-semibold">Listo para regalar</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">Llega en su cajita con calcomanías. Solo falta escribir la notita.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section id="como-funciona" class="relative z-10 mx-auto max-w-6xl px-5 py-20 md:px-8">
+      <h2 class="font-display text-center text-4xl font-semibold md:text-6xl">De tu pantalla a tu escritorio</h2>
+      <p class="mx-auto mt-4 max-w-lg text-center text-[#3b2a1e]/60">Tres pasos y un michi en camino.</p>
+
+      <ol class="mt-12 grid items-start gap-6 md:grid-cols-3">
+        <li class="relative overflow-hidden rounded-3xl border border-[#3b2a1e]/10 bg-white p-7 shadow-sm">
+          <span class="font-display text-6xl font-semibold text-[#3b2a1e]/10">1</span>
+          <h3 class="font-display mt-2 text-2xl font-semibold">Juega aquí mismo</h3>
+          <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">Clickea al gato del visor, suma caricias y gira al portacelular para ver cada detalle.</p>
+          <p class="mt-4 inline-block rounded-full border border-[#e8930c]/30 bg-[#ffb84d]/20 px-3 py-1 text-xs font-extrabold text-[#92580a]">⏱ 2 minutos</p>
+        </li>
+        <li class="relative overflow-hidden rounded-3xl border border-[#ff5c8a]/25 bg-[#fff0f4] p-7 shadow-sm">
+          <span class="font-display text-6xl font-semibold text-[#ff5c8a]/20">2</span>
+          <h3 class="font-display mt-2 text-2xl font-semibold">Elige tu michi</h3>
+          <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">Clicker para tu escritorio o portacelular para tus series. O los dos, no juzgamos.</p>
+          <p class="mt-4 inline-block rounded-full border border-[#ff5c8a]/30 bg-[#ff5c8a]/10 px-3 py-1 text-xs font-extrabold text-[#d63a68]">🐾 con calcomanías</p>
+        </li>
+        <li class="relative overflow-hidden rounded-3xl border border-[#0b7a55]/25 bg-[#e9f7f0] p-7 shadow-sm">
+          <span class="font-display text-6xl font-semibold text-[#0b7a55]/20">3</span>
+          <h3 class="font-display mt-2 text-2xl font-semibold">Recíbelo en casa</h3>
+          <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">Envío en 48 h con su cajita. Si llega con algún detalle, lo reponemos sin costo.</p>
+          <p class="mt-4 inline-block rounded-full border border-[#0b7a55]/30 bg-[#0b7a55]/10 px-3 py-1 text-xs font-extrabold text-[#0b7a55]">🏡 garantía de 15 días</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section class="relative z-10 mx-auto max-w-6xl px-5 pb-20 md:px-8">
+      <div class="grid items-start gap-6 md:grid-cols-3">
+        <figure class="-rotate-1 rounded-3xl bg-[#3b2a1e] p-7 text-[#fff8ee] shadow-xl">
+          <div class="text-lg tracking-wide">★★★★★</div>
+          <blockquote class="font-display mt-3 text-xl leading-snug font-medium">“Clickeamos el modelo 3D mil veces. En persona el clic suena todavía mejor.”</blockquote>
+          <figcaption class="mt-4 flex items-center gap-3">
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-[#ff5c8a] text-xl">👩</span>
+            <span class="text-sm"><strong>Valeria y Momo</strong><br /><span class="opacity-60">se llevaron la caja clicker</span></span>
+          </figcaption>
+        </figure>
+        <figure class="rotate-1 rounded-3xl bg-[#ffb84d] p-7 text-[#3b2a1e] shadow-xl md:translate-y-4">
+          <div class="text-lg tracking-wide">★★★★★</div>
+          <blockquote class="font-display mt-3 text-xl leading-snug font-medium">“El portacelular sostiene mi teléfono y mi corazón. Veo series con él.”</blockquote>
+          <figcaption class="mt-4 flex items-center gap-3">
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-[#3b2a1e] text-xl">🧑</span>
+            <span class="text-sm"><strong>Diego y Benito</strong><br /><span class="opacity-60">inseparables desde junio</span></span>
+          </figcaption>
+        </figure>
+        <figure class="-rotate-1 rounded-3xl bg-[#0b7a55] p-7 text-white shadow-xl">
+          <div class="text-lg tracking-wide">★★★★★</div>
+          <blockquote class="font-display mt-3 text-xl leading-snug font-medium">“Lo pedí para mi sobrina y terminé quedándomelo yo. Pedí otro.”</blockquote>
+          <figcaption class="mt-4 flex items-center gap-3">
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-white text-xl">👵</span>
+            <span class="text-sm"><strong>Doña Coco</strong><br /><span class="opacity-70">coleccionista de michis</span></span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- FAQ + PEDIDO -->
+    <section id="preguntas" class="relative z-10 mx-auto grid max-w-6xl items-start gap-10 px-5 pb-20 md:grid-cols-2 md:px-8">
+      <div>
+        <h2 class="font-display text-4xl font-semibold">Preguntas de humanos curiosos</h2>
+        <div class="mt-6 space-y-3">
+          <details class="rounded-2xl border border-[#3b2a1e]/10 bg-white p-5 open:shadow-md">
+            <summary class="font-display flex items-center justify-between gap-3 text-lg font-semibold">¿Cómo funciona el clicker? <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff5c8a] text-white"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg></span></summary>
+            <p class="mt-3 text-sm leading-relaxed text-[#3b2a1e]/65">Presionas al gatito y se esconde en su caja con un clic satisfactorio, luego salta de vuelta. Es la versión física de lo que pruebas aquí en 3D.</p>
+          </details>
+          <details class="rounded-2xl border border-[#3b2a1e]/10 bg-white p-5 open:shadow-md">
+            <summary class="font-display flex items-center justify-between gap-3 text-lg font-semibold">¿El portacelular aguanta mi teléfono? <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff5c8a] text-white"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg></span></summary>
+            <p class="mt-3 text-sm leading-relaxed text-[#3b2a1e]/65">Sostiene la mayoría de celulares con o sin funda. La pancita tiene el ángulo justo para ver series o hacer videollamadas.</p>
+          </details>
+          <details class="rounded-2xl border border-[#3b2a1e]/10 bg-white p-5 open:shadow-md">
+            <summary class="font-display flex items-center justify-between gap-3 text-lg font-semibold">¿De qué están hechos? <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff5c8a] text-white"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg></span></summary>
+            <p class="mt-3 text-sm leading-relaxed text-[#3b2a1e]/65">De PLA+ premium impreso en 3D, con bordes suaves y acabado revisado a mano. Resistentes a caídas de escritorio y a abrazos fuertes.</p>
+          </details>
+          <details class="rounded-2xl border border-[#3b2a1e]/10 bg-white p-5 open:shadow-md">
+            <summary class="font-display flex items-center justify-between gap-3 text-lg font-semibold">¿Cuánto tarda el envío? <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff5c8a] text-white"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg></span></summary>
+            <p class="mt-3 text-sm leading-relaxed text-[#3b2a1e]/65">Enviamos en 48 h a todo el país. Si tu michi llega con algún detalle, lo reponemos sin costo durante 15 días.</p>
+          </details>
+        </div>
+      </div>
+
+      <div id="pedido" class="arco-gato-sm relative overflow-hidden border border-[#3b2a1e]/10 bg-[#3b2a1e] p-8 text-[#fff8ee] shadow-xl md:p-10">
+        <div class="huellas absolute inset-0 opacity-[.15] invert"></div>
+        <div class="relative">
+          <p class="inline-block rounded-full bg-[#ffb84d] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#3b2a1e]">ENVÍO EN 48 H</p>
+          <h3 class="font-display mt-4 text-4xl leading-tight font-semibold">Pide tu michi y empieza a clickear</h3>
+          <p class="mt-3 font-bold text-white/70">Déjanos tus datos y te escribimos por WhatsApp para confirmar tu pedido.</p>
+          <form class="mt-6 space-y-3" onsubmit="return false">
+            <input required placeholder="Tu nombre" class="w-full rounded-2xl border-2 border-white/10 bg-white/10 px-5 py-3.5 font-bold text-white outline-none placeholder:text-white/40 focus:border-[#ffb84d]" />
+            <input required type="tel" placeholder="WhatsApp" class="w-full rounded-2xl border-2 border-white/10 bg-white/10 px-5 py-3.5 font-bold text-white outline-none placeholder:text-white/40 focus:border-[#ffb84d]" />
+            <div class="grid grid-cols-2 gap-3">
+              <label class="flex cursor-pointer items-center gap-2 rounded-2xl border-2 border-[#ffb84d] bg-[#ffb84d]/15 px-4 py-3 text-sm font-extrabold">
+                <input type="radio" name="michi" checked class="accent-[#ff5c8a]" /> Mishi Clicker · S/ 7
+              </label>
+              <label class="flex cursor-pointer items-center gap-2 rounded-2xl border-2 border-white/15 bg-white/5 px-4 py-3 text-sm font-extrabold">
+                <input type="radio" name="michi" class="accent-[#ff5c8a]" /> Portacelular · S/ 10
+              </label>
+            </div>
+            <button class="w-full rounded-2xl bg-[#ff5c8a] py-4 font-display text-xl font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-2xl hover:brightness-110 active:scale-[.99]">
+              Pedir por WhatsApp
+            </button>
+            <p class="text-center text-xs font-bold text-white/50">Pago a la entrega · garantía de 15 días</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 border-t border-[#3b2a1e]/10 bg-[#3b2a1e] text-[#fff8ee]">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-5 py-10 md:px-8">
+        <div class="flex items-center gap-3">
+          <span class="grid h-11 w-11 place-items-center rounded-2xl bg-[#fff8ee] text-2xl">🐱</span>
+          <div>
+            <p class="font-display text-xl font-semibold">Felynez</p>
+            <p class="text-xs font-bold text-white/50">Diseñado e impreso en 3D · Perú</p>
+          </div>
+        </div>
+        <div class="flex gap-6 text-sm font-bold text-white/60">
+          <a href="#manada" class="hover:text-white">Michis</a>
+          <a href="#visor" class="hover:text-white">Pruébalo</a>
+          <a href="#como-funciona" class="hover:text-white">Cómo funciona</a>
+          <a href="#pedido" class="hover:text-white">Pedido</a>
+        </div>
+        <p class="w-full text-center text-xs text-white/35 md:w-auto">© 2026 Felynez · Todos los clics reservados</p>
+      </div>
+    </footer>
+  </div>
+</Layout>

@@ -1,0 +1,401 @@
+---
+interface Props {
+  cajaSrc?: string;
+  gatoSrc?: string;
+  nombre?: string;
+  alto?: string;
+}
+
+const {
+  cajaSrc = "/models/gato1-caja.glb",
+  gatoSrc = "/models/gato1-gato.glb",
+  nombre = "Mishi",
+  alto = "h-[420px] md:h-[540px]",
+} = Astro.props;
+---
+
+<div
+  data-clicker
+  data-caja={cajaSrc}
+  data-gato={gatoSrc}
+  class:list={["group relative w-full overflow-hidden rounded-[28px] border border-[#3b2a1e]/10 bg-gradient-to-b from-[#f7e9cf] to-[#e9c896] select-none", alto]}
+>
+  <canvas class="block h-full w-full touch-none" aria-label={"Juego clicker 3D de " + nombre + ". Clickea al gato"}></canvas>
+
+  <!-- halo -->
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_38%,rgba(255,92,138,0.22),transparent_70%),radial-gradient(50%_40%_at_70%_80%,rgba(124,92,255,0.25),transparent_70%)]"></div>
+
+  <!-- marcador -->
+  <div class="absolute top-3 right-3 left-3 z-20 flex items-start justify-between gap-2">
+    <div class="flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-3 py-1.5 shadow-sm backdrop-blur-md sm:px-4 sm:py-2">
+      <span class="text-base sm:text-lg">🐾</span>
+      <span class="font-display text-base font-semibold text-[#b45309] sm:text-lg" data-count>0</span>
+      <span class="hidden text-xs font-extrabold tracking-widest text-[#3b2a1e]/60 min-[420px]:inline">CARICIAS</span>
+    </div>
+  </div>
+
+  <!-- controles -->
+  <div class="absolute right-3 bottom-3 z-20">
+    <button
+      data-btn-acariciar
+      class="rounded-full bg-[#3b2a1e] px-5 py-2 text-xs font-extrabold text-[#fff8ee] shadow-[0_8px_24px_rgba(59,42,30,.35)] transition hover:brightness-125 active:scale-95"
+    >
+      ¡Acariciar! 💛
+    </button>
+  </div>
+
+  <!-- estado de carga -->
+  <div data-carga class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-[#f3e2c7]/90 backdrop-blur-sm transition-opacity duration-500">
+    <div class="relative">
+      <svg width="88" height="88" viewBox="0 0 88 88" class="animate-[giro_2.4s_linear_infinite]">
+        <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(59,42,30,.15)" stroke-width="7" />
+        <path d="M44 8 a36 36 0 0 1 31 18" fill="none" stroke="#ff5c8a" stroke-width="7" stroke-linecap="round" />
+      </svg>
+      <div class="absolute inset-0 grid place-items-center text-3xl">📦</div>
+    </div>
+    <p class="font-display text-lg text-[#3b2a1e]" data-carga-txt>Armando la cajita…</p>
+    <p class="text-sm text-[#3b2a1e]/60">el michi ya viene en camino</p>
+  </div>
+
+  <!-- error -->
+  <div data-error class="absolute inset-0 z-10 hidden flex-col items-center justify-center gap-3 bg-[#f3e2c7] p-8 text-center">
+    <div class="text-5xl">😿</div>
+    <p class="font-display text-xl text-[#3b2a1e]">El michi se escondió muy bien</p>
+    <p class="max-w-xs text-sm text-[#3b2a1e]/60">No pudimos cargar la caja o el gato. Revisa tu conexión e inténtalo de nuevo.</p>
+  </div>
+
+</div>
+
+<script type="module">
+  import * as THREE from "three";
+  import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+  import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function easeInQuad(x) { return x * x; }
+  function easeOutBack(x) {
+    const c1 = 1.70158, c3 = c1 + 1;
+    return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+  }
+
+  /** Textura con emoji para las partículas del festejo */
+  function emojiTexture(emoji) {
+    const c = document.createElement("canvas");
+    c.width = c.height = 128;
+    const ctx = c.getContext("2d");
+    ctx.font = "96px serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(emoji, 64, 70);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }
+
+  document.querySelectorAll("[data-clicker]").forEach((root) => {
+    const canvas = root.querySelector("canvas");
+    const capaCarga = root.querySelector("[data-carga]");
+    const txtCarga = root.querySelector("[data-carga-txt]");
+    const capaError = root.querySelector("[data-error]");
+    const elCount = root.querySelector("[data-count]");
+    const btnAcariciar = root.querySelector("[data-btn-acariciar]");
+    const cajaSrc = root.getAttribute("data-caja");
+    const gatoSrc = root.getAttribute("data-gato");
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0xf0d9b4, 0.04);
+
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 60);
+    const CAM_HOME = new THREE.Vector3(0.7, 2.1, 5.6);
+    const TARGET_HOME = new THREE.Vector3(0, 1.15, 0);
+    camera.position.copy(CAM_HOME);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.copy(TARGET_HOME);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.minDistance = 2.6;
+    controls.maxDistance = 9;
+    controls.maxPolarAngle = Math.PI * 0.52;
+    controls.minPolarAngle = Math.PI * 0.1;
+    controls.enablePan = false;
+    controls.autoRotate = !reduceMotion;
+    controls.autoRotateSpeed = 1.2;
+
+    scene.add(new THREE.HemisphereLight(0xfff6e9, 0x8a6f4d, 1.1));
+    const key = new THREE.DirectionalLight(0xffe9c4, 2.4);
+    key.position.set(3.5, 6, 4);
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    scene.add(key);
+    const rimRosa = new THREE.PointLight(0xff5c8a, 26, 22);
+    rimRosa.position.set(-3.5, 2.4, -2.5);
+    scene.add(rimRosa);
+    const fillLila = new THREE.PointLight(0x7c5cff, 20, 22);
+    fillLila.position.set(3, 1.4, -3);
+    scene.add(fillLila);
+
+    const alfombra = new THREE.Mesh(
+      new THREE.CircleGeometry(2.2, 64),
+      new THREE.MeshStandardMaterial({ color: 0xc99e67, roughness: 0.95, metalness: 0 })
+    );
+    alfombra.rotation.x = -Math.PI / 2;
+    alfombra.receiveShadow = true;
+    scene.add(alfombra);
+
+    const aro = new THREE.Mesh(
+      new THREE.RingGeometry(2.2, 2.32, 64),
+      new THREE.MeshBasicMaterial({ color: 0xffb84d, transparent: true, opacity: 0.55, side: THREE.DoubleSide })
+    );
+    aro.rotation.x = -Math.PI / 2;
+    aro.position.y = 0.01;
+    scene.add(aro);
+
+    // --- Festejo: sprites de corazones y patitas ---
+    const FESTEJO_N = 26;
+    const festejo = [];
+    const texturas = [emojiTexture("💗"), emojiTexture("🐾"), emojiTexture("✨")];
+    for (let i = 0; i < FESTEJO_N; i++) {
+      const mat = new THREE.SpriteMaterial({ map: texturas[i % 3], transparent: true, opacity: 0, depthWrite: false });
+      const s = new THREE.Sprite(mat);
+      s.scale.setScalar(0.28 + Math.random() * 0.2);
+      s.visible = false;
+      scene.add(s);
+      festejo.push({ s, vel: new THREE.Vector3(), vida: 0 });
+    }
+    function lanzarFestejo(origen) {
+      let lanzadas = 0;
+      for (const p of festejo) {
+        if (p.vida > 0) continue;
+        p.vida = 0.9 + Math.random() * 0.5;
+        p.s.visible = true;
+        p.s.position.copy(origen).add(new THREE.Vector3((Math.random() - 0.5) * 0.6, Math.random() * 0.3, (Math.random() - 0.5) * 0.6));
+        p.vel.set((Math.random() - 0.5) * 3.2, 3.2 + Math.random() * 2.2, (Math.random() - 0.5) * 3.2);
+        if (++lanzadas >= 14) break;
+      }
+    }
+
+    // --- Sonido pop sintetizado (sin archivos) ---
+    let audioCtx = null;
+    function pop() {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(420 + Math.random() * 120, t);
+        osc.frequency.exponentialRampToValueAtTime(980, t + 0.09);
+        gain.gain.setValueAtTime(0.18, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + 0.18);
+      } catch (e) { /* silencio felino */ }
+    }
+
+    // --- Carga de caja + gato ---
+    const loader = new GLTFLoader();
+    let cajaG = null, gatoG = null;
+    let gatoBaseY = 0, gatoProfundidad = 1.0, gatoAlto = 1.0;
+    let cargados = 0, fallidos = 0;
+    let caricias = 0;
+    let pressT = -1; // -1 reposo, 0..1 animación
+    const PRESS_DUR = 0.55;
+
+    function normalizar(obj, tamObjetivo) {
+      const caja = new THREE.Box3().setFromObject(obj);
+      const centro = caja.getCenter(new THREE.Vector3());
+      const tam = caja.getSize(new THREE.Vector3());
+      const s = tamObjetivo / Math.max(tam.x, tam.y, tam.z);
+      obj.scale.setScalar(s);
+      obj.position.x -= centro.x * s;
+      obj.position.z -= centro.z * s;
+      return { tam: tam.clone().multiplyScalar(s), s };
+    }
+
+    function intentarListo() {
+      if (cargados < 2 || fallidos > 0) return;
+      // Asentar caja y acomodar al gato asomando desde dentro
+      const bc = new THREE.Box3().setFromObject(cajaG);
+      cajaG.position.y -= bc.min.y;
+      const bc2 = new THREE.Box3().setFromObject(cajaG);
+      const cajaTop = bc2.max.y;
+      const bg = new THREE.Box3().setFromObject(gatoG);
+      gatoAlto = bg.max.y - bg.min.y;
+      gatoProfundidad = 0.28;
+      gatoG.position.y -= bg.min.y;            // base del gato al suelo…
+      gatoG.position.y += cajaTop - 0.35;      // …y luego subirlo hasta asomar de la caja
+      gatoG.position.z += 0.15;
+      gatoBaseY = gatoG.position.y;
+      capaCarga.style.opacity = "0";
+      setTimeout(() => capaCarga.remove(), 600);
+    }
+
+    function onProgreso(cual) {
+      return (ev) => {
+        if (ev.total && txtCarga) {
+          const pct = Math.round((ev.loaded / ev.total) * 100);
+          txtCarga.textContent = cual === 0 ? ("Armando la cajita… " + pct + "%") : ("Llamando al michi… " + pct + "%");
+        }
+      };
+    }
+    function onError() {
+      fallidos++;
+      if (capaCarga) capaCarga.remove();
+      if (capaError) capaError.style.display = "flex";
+    }
+
+    loader.load(cajaSrc, (gltf) => {
+      cajaG = gltf.scene;
+      normalizar(cajaG, 2.7);
+      cajaG.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+      scene.add(cajaG);
+      cargados++;
+      intentarListo();
+    }, onProgreso(0), onError);
+
+    loader.load(gatoSrc, (gltf) => {
+      gatoG = gltf.scene;
+      normalizar(gatoG, 1.8);
+      gatoG.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = false; } });
+      scene.add(gatoG);
+      cargados++;
+      intentarListo();
+    }, onProgreso(1), onError);
+
+    // --- Click en el gato (distingue arrastrar de clickear) ---
+    const rayo = new THREE.Raycaster();
+    const puntero = new THREE.Vector2();
+    let downX = 0, downY = 0;
+
+    function ndcDeEvento(e) {
+      const r = canvas.getBoundingClientRect();
+      const cx = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
+      const cy = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
+      return {
+        x: ((cx - r.left) / r.width) * 2 - 1,
+        y: -((cy - r.top) / r.height) * 2 + 1,
+        rx: cx - r.left,
+        ry: cy - r.top,
+      };
+    }
+    function golpeaGato(e) {
+      if (!gatoG) return false;
+      const p = ndcDeEvento(e);
+      puntero.set(p.x, p.y);
+      rayo.setFromCamera(puntero, camera);
+      return rayo.intersectObject(gatoG, true).length > 0;
+    }
+
+    canvas.addEventListener("pointerdown", (e) => { downX = e.clientX; downY = e.clientY; });
+    canvas.addEventListener("pointerup", (e) => {
+      const mov = Math.hypot(e.clientX - downX, e.clientY - downY);
+      if (mov > 7) return; // fue un arrastre, no un clic
+      if (golpeaGato(e)) {
+        acariciar();
+      }
+    });
+    // Cursor de patita sobre el gato
+    let hoverCheck = 0;
+    canvas.addEventListener("pointermove", (e) => {
+      if (++hoverCheck % 3 !== 0) return;
+      canvas.style.cursor = golpeaGato(e) ? "pointer" : "grab";
+    });
+
+    function acariciar() {
+      if (!gatoG || cargados < 2) return;
+      if (pressT >= 0 && pressT < 0.4) return; // a mitad del movimiento no se interrumpe
+      pressT = 0;
+      caricias++;
+      if (elCount) {
+        elCount.textContent = caricias;
+        elCount.parentElement.animate(
+          [{ transform: "scale(1)" }, { transform: "scale(1.25)" }, { transform: "scale(1)" }],
+          { duration: 300, easing: "ease-out" }
+        );
+      }
+      const cabeza = new THREE.Vector3();
+      new THREE.Box3().setFromObject(gatoG).getCenter(cabeza);
+      cabeza.y += gatoAlto * 0.35;
+      lanzarFestejo(cabeza);
+      if (!reduceMotion) pop();
+    }
+
+    btnAcariciar?.addEventListener("click", () => {
+      acariciar();
+    });
+
+    function ajustar() {
+      const w = root.clientWidth, h = root.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    new ResizeObserver(ajustar).observe(root);
+    ajustar();
+
+    const reloj = new THREE.Clock();
+    (function animar() {
+      requestAnimationFrame(animar);
+      const dt = Math.min(reloj.getDelta(), 0.05);
+      const t = reloj.elapsedTime;
+
+      if (gatoG && cargados >= 2) {
+        if (pressT >= 0) {
+          pressT += dt / PRESS_DUR;
+          const k = Math.min(pressT, 1);
+          if (k < 0.35) {
+            // Baja un poquito
+            const e = easeInQuad(k / 0.35);
+            gatoG.position.y = gatoBaseY - e * gatoProfundidad;
+            gatoG.scale.y = gatoG.scale.x * (1 - 0.06 * e);
+          } else if (k < 0.45) {
+            gatoG.position.y = gatoBaseY - gatoProfundidad;
+          } else {
+            // Vuelve suave, sin rebote
+            const u = (k - 0.45) / 0.55;
+            const e = 1 - Math.pow(1 - u, 3);
+            gatoG.position.y = gatoBaseY - gatoProfundidad * (1 - e);
+            gatoG.scale.y = gatoG.scale.x * (1 - 0.06 * (1 - e));
+          }
+          if (pressT >= 1) {
+            pressT = -1;
+            gatoG.position.y = gatoBaseY;
+            const s = gatoG.scale.x;
+            gatoG.scale.set(s, s, s);
+          }
+        } else if (!reduceMotion) {
+          // Respiración idle del michi asomado
+          gatoG.position.y = gatoBaseY + Math.sin(t * 1.8) * 0.03;
+          gatoG.rotation.z = Math.sin(t * 1.1) * 0.02;
+        }
+      }
+
+      // Festejo físico
+      for (const p of festejo) {
+        if (p.vida <= 0) continue;
+        p.vida -= dt;
+        if (p.vida <= 0) { p.s.visible = false; p.s.material.opacity = 0; continue; }
+        p.vel.y -= 6.5 * dt;
+        p.s.position.addScaledVector(p.vel, dt);
+        p.s.material.opacity = Math.min(1, p.vida * 1.6);
+      }
+
+      aro.rotation.z = t * 0.1;
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+  });
+</script>
+

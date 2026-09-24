@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fredoka", "Nunito", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, sans-serif;
+
+  --color-noche: #17101f;
+  --color-uva: #2a1738;
+  --color-uva-soft: #3b214e;
+  --color-leche: #fff8ee;
+  --color-crema: #ffeed3;
+  --color-hocico: #ff5c8a;
+  --color-ambar: #ffb84d;
+  --color-lila: #7c5cff;
+  --color-menta: #2ee6a8;
+
+  --animate-flota: flota 5s ease-in-out infinite;
+  --animate-marquee: marquee 22s linear infinite;
+  --animate-giro-lento: giro 14s linear infinite;
+  --animate-parpadeo: parpadeo 3.2s ease-in-out infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: #f6ecdd;
+  color: #3b2a1e;
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Remate superior suave para las fichas de producto */
+.arco-gato {
+  border-radius: 36px 36px 28px 28px;
+}
+
+.arco-gato-sm {
+  border-radius: 28px;
+}
+
+/* Patrón de huellitas (versión clara) */
+.huellas {
+  background-image: radial-gradient(rgba(59, 42, 30, 0.1) 1.5px, transparent 1.6px);
+  background-size: 26px 26px;
+}
+
+.grano::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+}
+
+@keyframes flota {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-14px) rotate(1.5deg); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes giro {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes parpadeo {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+::selection {
+  background: #ff5c8a;
+  color: #17101f;
+}
+
+/* Scrollbar felina */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: #f6ecdd; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#b08d5f, #7c6247);
+  border-radius: 99px;
+  border: 3px solid #f6ecdd;
+}
+
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .mas {
+  transform: rotate(45deg);
+}
+.mas {
+  transition: transform 0.3s ease;
+}

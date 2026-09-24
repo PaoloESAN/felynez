@@ -1,0 +1,212 @@
+---
+interface Props {
+  src: string;
+  nombre?: string;
+  alto?: string;
+}
+
+const { src, nombre = "gatito 3D", alto = "h-[420px] md:h-[540px]" } = Astro.props;
+---
+
+<div
+  data-cat-viewer
+  data-src={src}
+  class:list={["group relative w-full overflow-hidden rounded-[28px] border border-[#3b2a1e]/10 bg-gradient-to-b from-[#f7e9cf] to-[#e9c896]", alto]}
+>
+  <canvas class="block h-full w-full touch-none" aria-label={"Modelo 3D interactivo de " + nombre}></canvas>
+
+  <!-- halo -->
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_38%,rgba(255,92,138,0.22),transparent_70%),radial-gradient(50%_40%_at_70%_80%,rgba(124,92,255,0.25),transparent_70%)]"></div>
+
+  <!-- estado de carga -->
+  <div data-carga class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-[#f3e2c7]/90 backdrop-blur-sm transition-opacity duration-500">
+    <div class="relative">
+      <svg width="88" height="88" viewBox="0 0 88 88" class="animate-[giro_2.4s_linear_infinite]">
+        <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(59,42,30,.15)" stroke-width="7" />
+        <path d="M44 8 a36 36 0 0 1 31 18" fill="none" stroke="#ff5c8a" stroke-width="7" stroke-linecap="round" />
+      </svg>
+      <div class="absolute inset-0 grid place-items-center text-3xl">🐾</div>
+    </div>
+    <p class="font-display text-lg text-[#3b2a1e]">Despertando al {nombre}…</p>
+    <p class="text-sm text-[#3b2a1e]/60">amasando polígonos y ronroneos</p>
+  </div>
+
+  <!-- error -->
+  <div data-error class="absolute inset-0 z-10 hidden flex-col items-center justify-center gap-3 bg-[#f3e2c7] p-8 text-center">
+    <div class="text-5xl">😿</div>
+    <p class="font-display text-xl text-[#3b2a1e]">El michi no quiso salir de su caja</p>
+    <p class="max-w-xs text-sm text-[#3b2a1e]/60">No pudimos cargar el modelo 3D. Revisa tu conexión e inténtalo de nuevo.</p>
+  </div>
+
+</div>
+
+<script type="module">
+  import * as THREE from "three";
+  import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+  import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /** Inicializa todos los visores de la página */
+  document.querySelectorAll("[data-cat-viewer]").forEach((root) => {
+    const canvas = root.querySelector("canvas");
+    const capaCarga = root.querySelector("[data-carga]");
+    const capaError = root.querySelector("[data-error]");
+    const src = root.getAttribute("data-src");
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0xf0d9b4, 0.045);
+
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 60);
+    const CAM_HOME = new THREE.Vector3(0.4, 1.55, 4.4);
+    const TARGET_HOME = new THREE.Vector3(0, 0.95, 0);
+    camera.position.copy(CAM_HOME);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.copy(TARGET_HOME);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.minDistance = 2.2;
+    controls.maxDistance = 8;
+    controls.maxPolarAngle = Math.PI * 0.52;
+    controls.minPolarAngle = Math.PI * 0.12;
+    controls.enablePan = false;
+    controls.autoRotate = !reduceMotion;
+    controls.autoRotateSpeed = 1.4;
+
+    // --- Luces de estudio gatuno ---
+    scene.add(new THREE.HemisphereLight(0xfff6e9, 0x8a6f4d, 1.1));
+
+    const key = new THREE.DirectionalLight(0xffe9c4, 2.4);
+    key.position.set(3.5, 5.5, 4);
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    scene.add(key);
+
+    const rimRosa = new THREE.PointLight(0xff5c8a, 22, 20);
+    rimRosa.position.set(-3.5, 2.2, -2.5);
+    scene.add(rimRosa);
+
+    const fillLila = new THREE.PointLight(0x7c5cff, 18, 20);
+    fillLila.position.set(3, 1.2, -3);
+    scene.add(fillLila);
+
+    const brilloAmbar = new THREE.PointLight(0xffb84d, 8, 10);
+    brilloAmbar.position.set(0, 3.4, 2.2);
+    scene.add(brilloAmbar);
+
+    // --- Suelo: alfombra redonda + sombra suave ---
+    const alfombra = new THREE.Mesh(
+      new THREE.CircleGeometry(1.9, 64),
+      new THREE.MeshStandardMaterial({ color: 0xc99e67, roughness: 0.95, metalness: 0 })
+    );
+    alfombra.rotation.x = -Math.PI / 2;
+    alfombra.receiveShadow = true;
+    scene.add(alfombra);
+
+    const aro = new THREE.Mesh(
+      new THREE.RingGeometry(1.9, 2.02, 64),
+      new THREE.MeshBasicMaterial({ color: 0xffb84d, transparent: true, opacity: 0.55, side: THREE.DoubleSide })
+    );
+    aro.rotation.x = -Math.PI / 2;
+    aro.position.y = 0.01;
+    scene.add(aro);
+
+    // Polvo de estrellas / pelusa flotante
+    const pelusaGeo = new THREE.BufferGeometry();
+    const N = 140;
+    const pos = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * 7;
+      pos[i * 3 + 1] = Math.random() * 4;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 7;
+    }
+    pelusaGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    const pelusa = new THREE.Points(
+      pelusaGeo,
+      new THREE.PointsMaterial({ color: 0xffd9e8, size: 0.035, transparent: true, opacity: 0.7 })
+    );
+    scene.add(pelusa);
+
+    let modelo = null;
+    const loader = new GLTFLoader();
+
+    loader.load(
+      src,
+      (gltf) => {
+        modelo = gltf.scene;
+
+        // Centrar y escalar el modelo a la alfombra
+        const caja = new THREE.Box3().setFromObject(modelo);
+        const centro = caja.getCenter(new THREE.Vector3());
+        const tam = caja.getSize(new THREE.Vector3());
+        const maxLado = Math.max(tam.x, tam.y, tam.z);
+        const escala = 2.4 / maxLado;
+        modelo.scale.setScalar(escala);
+        modelo.position.sub(centro.clone().multiplyScalar(escala));
+        modelo.position.y += 1.15 - (tam.y * escala) / 2 + (tam.y * escala) / 2 * 0; // base sobre la alfombra
+        // Ajuste: asentar la base en y=0
+        const caja2 = new THREE.Box3().setFromObject(modelo);
+        modelo.position.y -= caja2.min.y;
+
+        modelo.traverse((o) => {
+          if (o.isMesh) {
+            o.castShadow = true;
+            o.receiveShadow = false;
+          }
+        });
+
+        scene.add(modelo);
+        capaCarga.style.opacity = "0";
+        setTimeout(() => capaCarga.remove(), 600);
+      },
+      (ev) => {
+        // progreso: podríamos mostrar %, por ahora solo latido
+        if (ev.total) {
+          const pct = Math.round((ev.loaded / ev.total) * 100);
+          const txt = capaCarga.querySelector("p");
+          if (txt) txt.textContent = `Despertando al michi… ${pct}%`;
+        }
+      },
+      () => {
+        capaCarga.remove();
+        capaError.style.display = "flex";
+      }
+    );
+
+    // Resize
+    function ajustar() {
+      const w = root.clientWidth;
+      const h = root.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    new ResizeObserver(ajustar).observe(root);
+    ajustar();
+
+    // Loop con flotación
+    const reloj = new THREE.Clock();
+    (function animar() {
+      requestAnimationFrame(animar);
+      const t = reloj.getElapsedTime();
+      if (modelo && !reduceMotion) {
+        modelo.position.y += Math.sin(t * 1.6) * 0.0012;
+        modelo.rotation.y += controls.autoRotate ? 0 : 0;
+      }
+      pelusa.rotation.y = t * 0.02;
+      aro.rotation.z = t * 0.1;
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+  });
+</script>
