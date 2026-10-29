@@ -1,0 +1,629 @@
+---
+interface Props {
+  calabazaSrc?: string;
+  caritas?: Array<{
+    id: string;
+    nombre: string;
+    expresion: string;
+    src: string;
+  }>;
+  nombre?: string;
+  alto?: string;
+  mostrarSelector?: boolean;
+}
+
+const {
+  calabazaSrc = "/models/calaba/calabaza.glb",
+  caritas = [
+    { id: "pum1", nombre: "Pícaro", expresion: "o.<", src: "/models/calaba/cat-pum1.glb" },
+    { id: "pum2", nombre: "Travieso", expresion: ">.<", src: "/models/calaba/cat-pum2.glb" },
+    { id: "pum3", nombre: "Curioso", expresion: "o.o", src: "/models/calaba/cat-pum3.glb" },
+  ],
+  nombre = "Mishi Calabaza",
+  alto = "h-[420px] md:h-[540px]",
+  mostrarSelector = true,
+} = Astro.props;
+---
+
+<div
+  data-pumpkin-clicker
+  data-calabaza={calabazaSrc}
+  data-caritas={JSON.stringify(caritas)}
+  class:list={["group relative w-full overflow-hidden rounded-[30px] border border-[#ff7518]/30 bg-gradient-to-b from-[#1a0f28] via-[#120a1e] to-[#0a0512] select-none shadow-[0_20px_60px_rgba(0,0,0,0.6)]", alto]}
+>
+  <canvas class="block h-full w-full touch-none cursor-grab active:cursor-grabbing" aria-label={"Clicker 3D de " + nombre + " con 3 caritas intercambiables. Clickea para jugar."}></canvas>
+
+  <!-- Resplandor embrujado de fondo -->
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_50%_at_50%_40%,rgba(255,117,24,0.22),transparent_70%),radial-gradient(40%_40%_at_80%_80%,rgba(139,92,246,0.2),transparent_70%)]"></div>
+
+  <!-- Marcador de caricias / sustos -->
+  <div class="absolute top-3.5 right-3.5 left-3.5 z-20 flex items-center justify-between gap-2 pointer-events-none">
+    <div class="flex items-center gap-2 rounded-full border border-[#ff7518]/30 bg-[#160d24]/85 px-3.5 py-1.5 shadow-[0_4px_20px_rgba(255,117,24,0.15)] backdrop-blur-md">
+      <span class="text-base sm:text-lg animate-pulse">🎃</span>
+      <span class="font-display text-base font-bold text-[#ff9e3b] sm:text-lg" data-count>0</span>
+      <span class="text-[10px] sm:text-xs font-black tracking-widest text-[#ffeedd]/70 uppercase">Sustos & Caricias</span>
+    </div>
+
+    <div class="flex items-center gap-1.5 rounded-full border border-purple-500/30 bg-[#1c0f33]/80 px-3 py-1 text-[11px] font-bold text-purple-200 backdrop-blur-md">
+      <span class="inline-block h-2 w-2 rounded-full bg-[#ff7518] animate-ping"></span>
+      <span class="hidden sm:inline">Edición Halloween</span>
+      <span class="sm:hidden">3D</span>
+    </div>
+  </div>
+
+  <!-- Selector de 3 Caritas de Gato -->
+  {mostrarSelector && (
+    <div class="absolute bottom-3 left-3 z-20 flex flex-col gap-1.5">
+      <span class="text-[10px] font-black tracking-wider text-[#ffaa55] uppercase drop-shadow-sm px-1">
+        Cambiar carita:
+      </span>
+      <div class="flex items-center gap-1.5 rounded-2xl border border-[#ff7518]/25 bg-[#140b22]/90 p-1 backdrop-blur-md shadow-lg">
+        {caritas.map((c, i) => (
+          <button
+            type="button"
+            data-face-btn={c.id}
+            data-face-idx={i}
+            class:list={[
+              "relative flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-black transition-all cursor-pointer",
+              i === 0
+                ? "bg-[#ff7518] text-[#12081f] shadow-[0_0_15px_rgba(255,117,24,0.6)] scale-105"
+                : "text-[#ffd9b3]/80 hover:bg-[#ff7518]/20 hover:text-white"
+            ]}
+          >
+            <span class="font-mono text-xs">{c.expresion}</span>
+            <span class="text-[11px] hidden sm:inline">{c.nombre}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Botón de acariciar -->
+  <div class="absolute right-3 bottom-3 z-20">
+    <button
+      type="button"
+      data-btn-acariciar
+      class="group/btn flex items-center gap-2 rounded-full bg-gradient-to-r from-[#ff7518] to-[#e65100] px-5 py-2.5 text-xs font-black text-white shadow-[0_8px_25px_rgba(255,117,24,0.4)] transition-all hover:scale-105 hover:brightness-110 active:scale-95 cursor-pointer"
+    >
+      <span>¡Acariciar!</span>
+      <span class="text-base group-hover/btn:rotate-12 transition-transform">🎃</span>
+    </button>
+  </div>
+
+  <!-- Estado de carga -->
+  <div data-carga class="absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 bg-[#12091d]/95 backdrop-blur-md text-[#fff0db] transition-opacity duration-500">
+    <div class="relative">
+      <svg width="80" height="80" viewBox="0 0 88 88" class="animate-[giro_2.2s_linear_infinite]">
+        <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(255,117,24,0.2)" stroke-width="6" />
+        <path d="M44 8 a36 36 0 0 1 31 18" fill="none" stroke="#ff7518" stroke-width="6" stroke-linecap="round" />
+      </svg>
+      <div class="absolute inset-0 grid place-items-center text-3xl animate-bounce">🎃</div>
+    </div>
+    <p class="font-display text-lg font-bold text-[#ffaa55]" data-carga-txt>Tallando la calabaza…</p>
+    <p class="text-xs text-[#ffeedd]/60">el michi embrujado se asoma en 3D</p>
+  </div>
+
+  <!-- Estado de error -->
+  <div data-error class="absolute inset-0 z-30 hidden flex-col items-center justify-center gap-3 bg-[#12091d] p-8 text-center text-[#fff0db]">
+    <div class="text-5xl">😿</div>
+    <p class="font-display text-xl font-bold text-[#ffaa55]">El gato calabaza se escondió en la noche</p>
+    <p class="max-w-xs text-xs text-[#ffeedd]/60">No se pudieron cargar los modelos 3D de Halloween. Intenta recargar la página.</p>
+  </div>
+</div>
+
+<script type="module">
+  import * as THREE from "three";
+  import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+  import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function easeInQuad(x) { return x * x; }
+
+  function emojiTexture(emoji) {
+    const c = document.createElement("canvas");
+    c.width = c.height = 128;
+    const ctx = c.getContext("2d");
+    ctx.font = "88px serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(emoji, 64, 68);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }
+
+  document.querySelectorAll("[data-pumpkin-clicker]").forEach((root) => {
+    const canvas = root.querySelector("canvas");
+    const capaCarga = root.querySelector("[data-carga]");
+    const txtCarga = root.querySelector("[data-carga-txt]");
+    const capaError = root.querySelector("[data-error]");
+    const elCount = root.querySelector("[data-count]");
+    const btnAcariciar = root.querySelector("[data-btn-acariciar]");
+    const faceButtons = root.querySelectorAll("[data-face-btn]");
+
+    const calabazaSrc = root.getAttribute("data-calabaza") || "/models/calaba/calabaza.glb";
+    let caritasConfig = [];
+    try {
+      caritasConfig = JSON.parse(root.getAttribute("data-caritas") || "[]");
+    } catch {
+      caritasConfig = [
+        { id: "pum1", src: "/models/calaba/cat-pum1.glb" },
+        { id: "pum2", src: "/models/calaba/cat-pum2.glb" },
+        { id: "pum3", src: "/models/calaba/cat-pum3.glb" }
+      ];
+    }
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x130a20, 0.04);
+
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 60);
+    const CAM_HOME = new THREE.Vector3(0.5, 2.3, 5.8);
+    const TARGET_HOME = new THREE.Vector3(0, 1.1, 0);
+    camera.position.copy(CAM_HOME);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.copy(TARGET_HOME);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.minDistance = 2.4;
+    controls.maxDistance = 8.5;
+    controls.maxPolarAngle = Math.PI * 0.52;
+    controls.minPolarAngle = Math.PI * 0.12;
+    controls.enablePan = false;
+    controls.autoRotate = !reduceMotion;
+    controls.autoRotateSpeed = 1.3;
+
+    // --- Luces de Halloween ---
+    // Ambiente nocturno sutil
+    scene.add(new THREE.HemisphereLight(0xffeedd, 0x1d1130, 0.85));
+
+    // Luz principal cálida / naranja calabaza
+    const key = new THREE.DirectionalLight(0xffb355, 2.6);
+    key.position.set(3.5, 6, 4.5);
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    scene.add(key);
+
+    // Luz de fuego / vela desde el frente bajo
+    const velaPoint = new THREE.PointLight(0xff6a00, 25, 12);
+    velaPoint.position.set(0, 0.7, 2.8);
+    scene.add(velaPoint);
+
+    // Contraluz púrpura brujil
+    const rimPurpura = new THREE.PointLight(0xa855f7, 28, 22);
+    rimPurpura.position.set(-3.5, 3.2, -2.8);
+    scene.add(rimPurpura);
+
+    // Contraluz verde neón slime tenue
+    const fillVerde = new THREE.PointLight(0x2ee6a8, 16, 20);
+    fillVerde.position.set(3.5, 2.2, -3);
+    scene.add(fillVerde);
+
+    // --- Pedestal / Alfombra de invocación de Halloween ---
+    const alfombra = new THREE.Mesh(
+      new THREE.CircleGeometry(2.3, 64),
+      new THREE.MeshStandardMaterial({
+        color: 0x1f1133,
+        roughness: 0.85,
+        metalness: 0.1
+      })
+    );
+    alfombra.rotation.x = -Math.PI / 2;
+    alfombra.receiveShadow = true;
+    scene.add(alfombra);
+
+    const aroNaranja = new THREE.Mesh(
+      new THREE.RingGeometry(2.28, 2.4, 64),
+      new THREE.MeshBasicMaterial({
+        color: 0xff7518,
+        transparent: true,
+        opacity: 0.75,
+        side: THREE.DoubleSide
+      })
+    );
+    aroNaranja.rotation.x = -Math.PI / 2;
+    aroNaranja.position.y = 0.01;
+    scene.add(aroNaranja);
+
+    const aroPurpura = new THREE.Mesh(
+      new THREE.RingGeometry(1.85, 1.92, 64),
+      new THREE.MeshBasicMaterial({
+        color: 0x9333ea,
+        transparent: true,
+        opacity: 0.5,
+        side: THREE.DoubleSide
+      })
+    );
+    aroPurpura.rotation.x = -Math.PI / 2;
+    aroPurpura.position.y = 0.012;
+    scene.add(aroPurpura);
+
+    // --- Partículas de fiesta de Halloween (calabazas, murciélagos, fantasmas, dulces) ---
+    const FESTEJO_N = 30;
+    const festejo = [];
+    const texturas = [
+      emojiTexture("🎃"),
+      emojiTexture("🦇"),
+      emojiTexture("👻"),
+      emojiTexture("🍬"),
+      emojiTexture("✨")
+    ];
+    for (let i = 0; i < FESTEJO_N; i++) {
+      const mat = new THREE.SpriteMaterial({
+        map: texturas[i % texturas.length],
+        transparent: true,
+        opacity: 0,
+        depthWrite: false
+      });
+      const s = new THREE.Sprite(mat);
+      s.scale.setScalar(0.3 + Math.random() * 0.22);
+      s.visible = false;
+      scene.add(s);
+      festejo.push({ s, vel: new THREE.Vector3(), vida: 0 });
+    }
+
+    function lanzarFestejo(origen) {
+      let lanzadas = 0;
+      for (const p of festejo) {
+        if (p.vida > 0) continue;
+        p.vida = 1.0 + Math.random() * 0.6;
+        p.s.visible = true;
+        p.s.position.copy(origen).add(
+          new THREE.Vector3((Math.random() - 0.5) * 0.7, Math.random() * 0.35, (Math.random() - 0.5) * 0.7)
+        );
+        p.vel.set((Math.random() - 0.5) * 3.4, 3.4 + Math.random() * 2.4, (Math.random() - 0.5) * 3.4);
+        if (++lanzadas >= 16) break;
+      }
+    }
+
+    // --- Sonido de clic / susto divertido sintetizado con Web Audio ---
+    let audioCtx = null;
+    function popHalloween() {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        // Toque alegre de resorte / campanita
+        osc.frequency.setValueAtTime(360 + Math.random() * 80, t);
+        osc.frequency.exponentialRampToValueAtTime(1150, t + 0.08);
+        gain.gain.setValueAtTime(0.2, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + 0.2);
+      } catch (e) { /* silencioso */ }
+    }
+
+    // --- Modelos ---
+    const loader = new GLTFLoader();
+    let calabazaScene = null;
+    let calabazaScale = 1;
+    let calabazaHeight = 1.8;
+
+    const catScenes = []; // [ { id, scene, basePos, baseY } ]
+    let activeFaceIndex = 0;
+    let clickerReady = false;
+    let caricias = 0;
+
+    let pressT = -1;
+    const PRESS_DUR = 0.52;
+    const PRESS_DEPTH = 0.36; // Profundidad con la que el gato se sumerge en la calabaza
+
+    function setupCalabaza(gltf) {
+      calabazaScene = gltf.scene;
+      const box = new THREE.Box3().setFromObject(calabazaScene);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      const maxDim = Math.max(size.x, size.z);
+      calabazaScale = 2.85 / maxDim; // Escalar a ~2.85 unidades de ancho
+
+      calabazaScene.scale.setScalar(calabazaScale);
+      calabazaScene.position.x = -center.x * calabazaScale;
+      calabazaScene.position.z = -center.z * calabazaScale;
+      calabazaScene.position.y = -box.min.y * calabazaScale;
+
+      calabazaHeight = size.y * calabazaScale;
+
+      calabazaScene.traverse((o) => {
+        if (o.isMesh) {
+          o.castShadow = true;
+          o.receiveShadow = true;
+          if (o.material) {
+            o.material.roughness = 0.5;
+          }
+        }
+      });
+
+      scene.add(calabazaScene);
+    }
+
+    function setupCatFace(gltf, config, index) {
+      const sceneGato = gltf.scene;
+      const box = new THREE.Box3().setFromObject(sceneGato);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      // Usar la misma escala que la calabaza para mantener proporciones mecánicas
+      sceneGato.scale.setScalar(calabazaScale);
+      sceneGato.position.x = -center.x * calabazaScale;
+      // Centrado exacto en la apertura de la calabaza
+      sceneGato.position.z = -center.z * calabazaScale - 0.11;
+
+      // El gato se asoma saliendo de la apertura superior de la calabaza
+      const baseY = -box.min.y * calabazaScale + calabazaHeight * 0.46;
+      sceneGato.position.y = baseY;
+
+      sceneGato.traverse((o) => {
+        if (o.isMesh) {
+          o.castShadow = true;
+          o.receiveShadow = false;
+          if (o.material) {
+            o.material.roughness = 0.45;
+          }
+        }
+      });
+
+      sceneGato.visible = (index === activeFaceIndex);
+      scene.add(sceneGato);
+
+      catScenes[index] = {
+        id: config.id,
+        scene: sceneGato,
+        baseY: baseY,
+        sizeY: size.y * calabazaScale
+      };
+    }
+
+    function checkReady() {
+      if (!calabazaScene) return;
+      if (!catScenes[0]) return; // Al menos la primera carita lista
+
+      clickerReady = true;
+      if (capaCarga) {
+        capaCarga.style.opacity = "0";
+        setTimeout(() => capaCarga.remove(), 550);
+      }
+    }
+
+    // 1. Cargar Calabaza
+    loader.load(
+      calabazaSrc,
+      (gltf) => {
+        setupCalabaza(gltf);
+
+        // 2. Una vez que la calabaza tiene su escala, cargar las caritas de gato
+        caritasConfig.forEach((cfg, idx) => {
+          loader.load(
+            cfg.src,
+            (catGltf) => {
+              setupCatFace(catGltf, cfg, idx);
+              checkReady();
+            },
+            (ev) => {
+              if (ev.total && txtCarga && idx === 0) {
+                const pct = Math.round((ev.loaded / ev.total) * 100);
+                txtCarga.textContent = `Invocando al michi… ${pct}%`;
+              }
+            },
+            (err) => {
+              console.error("Error cargando carita " + cfg.src, err);
+            }
+          );
+        });
+      },
+      (ev) => {
+        if (ev.total && txtCarga) {
+          const pct = Math.round((ev.loaded / ev.total) * 100);
+          txtCarga.textContent = `Tallando la calabaza… ${pct}%`;
+        }
+      },
+      (err) => {
+        console.error("Error cargando calabaza", err);
+        if (capaCarga) capaCarga.remove();
+        if (capaError) capaError.style.display = "flex";
+      }
+    );
+
+    // --- Cambiar carita activa ---
+    function cambiarCarita(index) {
+      if (index === activeFaceIndex) return;
+      activeFaceIndex = index;
+
+      catScenes.forEach((item, idx) => {
+        if (item && item.scene) {
+          item.scene.visible = (idx === activeFaceIndex);
+          if (idx === activeFaceIndex) {
+            item.scene.position.y = item.baseY;
+          }
+        }
+      });
+
+      // Actualizar estilo de botones
+      faceButtons.forEach((btn, idx) => {
+        if (idx === activeFaceIndex) {
+          btn.className = "relative flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-black transition-all cursor-pointer bg-[#ff7518] text-[#12081f] shadow-[0_0_15px_rgba(255,117,24,0.6)] scale-105";
+        } else {
+          btn.className = "relative flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-black transition-all cursor-pointer text-[#ffd9b3]/80 hover:bg-[#ff7518]/20 hover:text-white";
+        }
+      });
+
+      if (!reduceMotion) popHalloween();
+    }
+
+    faceButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        cambiarCarita(idx);
+      });
+    });
+
+    // --- Clicker / Acariciar ---
+    const rayo = new THREE.Raycaster();
+    const puntero = new THREE.Vector2();
+    let downX = 0, downY = 0;
+
+    function ndcDeEvento(e) {
+      const r = canvas.getBoundingClientRect();
+      const cx = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
+      const cy = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
+      return {
+        x: ((cx - r.left) / r.width) * 2 - 1,
+        y: -((cy - r.top) / r.height) * 2 + 1,
+      };
+    }
+
+    function golpeaModelo(e) {
+      const activeCat = catScenes[activeFaceIndex];
+      const p = ndcDeEvento(e);
+      puntero.set(p.x, p.y);
+      rayo.setFromCamera(puntero, camera);
+
+      // Si golpea al gato o la calabaza
+      if (activeCat && activeCat.scene) {
+        if (rayo.intersectObject(activeCat.scene, true).length > 0) return true;
+      }
+      if (calabazaScene) {
+        if (rayo.intersectObject(calabazaScene, true).length > 0) return true;
+      }
+      return false;
+    }
+
+    canvas.addEventListener("pointerdown", (e) => {
+      downX = e.clientX;
+      downY = e.clientY;
+    });
+
+    canvas.addEventListener("pointerup", (e) => {
+      const mov = Math.hypot(e.clientX - downX, e.clientY - downY);
+      if (mov > 7) return; // Arrastro cámara
+      if (golpeaModelo(e)) {
+        acariciar();
+      }
+    });
+
+    function acariciar() {
+      if (!clickerReady) return;
+      if (pressT >= 0 && pressT < 0.4) return;
+
+      pressT = 0;
+      caricias++;
+
+      if (elCount) {
+        elCount.textContent = caricias;
+        elCount.parentElement.animate(
+          [
+            { transform: "scale(1)", filter: "brightness(1)" },
+            { transform: "scale(1.28)", filter: "brightness(1.4)" },
+            { transform: "scale(1)", filter: "brightness(1)" }
+          ],
+          { duration: 320, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" }
+        );
+      }
+
+      const activeCat = catScenes[activeFaceIndex];
+      const origen = new THREE.Vector3(0, calabazaHeight * 0.9, 0);
+      if (activeCat && activeCat.scene) {
+        new THREE.Box3().setFromObject(activeCat.scene).getCenter(origen);
+        origen.y += 0.3;
+      }
+      lanzarFestejo(origen);
+      if (!reduceMotion) popHalloween();
+    }
+
+    btnAcariciar?.addEventListener("click", () => {
+      acariciar();
+    });
+
+    // Resize
+    function ajustar() {
+      const w = root.clientWidth, h = root.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    new ResizeObserver(ajustar).observe(root);
+    ajustar();
+
+    // Loop
+    const reloj = new THREE.Clock();
+    (function animar() {
+      requestAnimationFrame(animar);
+      const dt = Math.min(reloj.getDelta(), 0.05);
+      const t = reloj.elapsedTime;
+
+      const activeCat = catScenes[activeFaceIndex];
+
+      if (activeCat && activeCat.scene && clickerReady) {
+        const cat = activeCat.scene;
+        const baseY = activeCat.baseY;
+
+        if (pressT >= 0) {
+          pressT += dt / PRESS_DUR;
+          const k = Math.min(pressT, 1);
+
+          if (k < 0.35) {
+            // El gato desciende en la calabaza (clic mecánico)
+            const e = easeInQuad(k / 0.35);
+            cat.position.y = baseY - e * PRESS_DEPTH;
+            cat.scale.y = calabazaScale * (1 - 0.07 * e);
+          } else if (k < 0.45) {
+            cat.position.y = baseY - PRESS_DEPTH;
+          } else {
+            // Salta de vuelta con rebote elástico
+            const u = (k - 0.45) / 0.55;
+            const e = 1 - Math.pow(1 - u, 3);
+            cat.position.y = baseY - PRESS_DEPTH * (1 - e);
+            cat.scale.y = calabazaScale * (1 - 0.07 * (1 - e));
+          }
+
+          if (pressT >= 1) {
+            pressT = -1;
+            cat.position.y = baseY;
+            cat.scale.setScalar(calabazaScale);
+          }
+        } else if (!reduceMotion) {
+          // Respiración / flotación sutil del michi
+          cat.position.y = baseY + Math.sin(t * 2.2) * 0.025;
+          cat.rotation.z = Math.sin(t * 1.3) * 0.015;
+        }
+      }
+
+      // Parpadeo sutil de vela de Halloween
+      if (!reduceMotion) {
+        velaPoint.intensity = 24 + Math.sin(t * 7.5) * 4 + Math.cos(t * 13) * 2;
+      }
+
+      // Animación de partículas
+      for (const p of festejo) {
+        if (p.vida <= 0) continue;
+        p.vida -= dt;
+        if (p.vida <= 0) {
+          p.s.visible = false;
+          p.s.material.opacity = 0;
+          continue;
+        }
+        p.vel.y -= 7.0 * dt;
+        p.s.position.addScaledVector(p.vel, dt);
+        p.s.material.opacity = Math.min(1, p.vida * 1.5);
+      }
+
+      aroNaranja.rotation.z = t * 0.12;
+      aroPurpura.rotation.z = -t * 0.08;
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+  });
+</script>

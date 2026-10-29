@@ -3,30 +3,32 @@ import "../styles/global.css";
 
 interface Props {
   title?: string;
+  description?: string;
 }
-const { title = "Felynez — boutique felina" } = Astro.props;
+const {
+  title = "Felynez Halloween 🎃 — Clicker 3D de Gato Calabaza y Michi en Caja",
+  description = "Edición especial Halloween de Felynez: juguetes 3D gatunos antiestrés. Descubre el nuevo Mishi Calabaza con 3 caritas intercambiables y el clásico michi en su caja. ¡Pruébalos en 3D!"
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="dark scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta
-      name="description"
-      content="Felynez, juguetes 3D gatunos. Clicker antiestrés de gato en su caja y portacelular para recostar tu teléfono. Pruébalos en 3D."
-    />
+    <meta name="theme-color" content="#ff7518" />
+    <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Creepster&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class="antialiased">
+  <body class="antialiased bg-[#0d0714] text-[#fff2e2] selection:bg-[#ff7518] selection:text-[#0d0714]">
     <slot />
   </body>
 </html>

@@ -3,31 +3,37 @@
 @theme {
   --font-display: "Fredoka", "Nunito", system-ui, sans-serif;
   --font-body: "Nunito", system-ui, sans-serif;
+  --font-spooky: "Creepster", cursive, system-ui;
 
-  --color-noche: #17101f;
-  --color-uva: #2a1738;
-  --color-uva-soft: #3b214e;
-  --color-leche: #fff8ee;
-  --color-crema: #ffeed3;
-  --color-hocico: #ff5c8a;
-  --color-ambar: #ffb84d;
-  --color-lila: #7c5cff;
-  --color-menta: #2ee6a8;
+  --color-noche: #0d0714;
+  --color-noche-card: #150d22;
+  --color-noche-hover: #1f1330;
+  --color-calabaza: #ff7518;
+  --color-calabaza-brillante: #ff8c1a;
+  --color-calabaza-fuego: #ff5500;
+  --color-morado-bruja: #9333ea;
+  --color-morado-magico: #a855f7;
+  --color-verde-slime: #2ee6a8;
+  --color-hueso: #fff0db;
+  --color-hueso-suave: #edd7be;
 
-  --animate-flota: flota 5s ease-in-out infinite;
-  --animate-marquee: marquee 22s linear infinite;
-  --animate-giro-lento: giro 14s linear infinite;
-  --animate-parpadeo: parpadeo 3.2s ease-in-out infinite;
+  --animate-flota: flota 4.5s ease-in-out infinite;
+  --animate-flota-lenta: flotaLenta 6s ease-in-out infinite;
+  --animate-marquee: marquee 24s linear infinite;
+  --animate-giro: giro 12s linear infinite;
+  --animate-flicker: flicker 3s infinite;
+  --animate-pulso-calabaza: pulsoCalabaza 2.5s ease-in-out infinite;
 }
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
   font-family: var(--font-body);
-  background: #f6ecdd;
-  color: #3b2a1e;
+  background: #0d0714;
+  color: #fff0db;
   overflow-x: hidden;
 }
 
@@ -35,11 +41,15 @@ body {
   font-family: var(--font-display);
 }
 
+.font-spooky {
+  font-family: var(--font-spooky);
+}
+
 .text-balance {
   text-wrap: balance;
 }
 
-/* Remate superior suave para las fichas de producto */
+/* Fichas de producto con remate curvo */
 .arco-gato {
   border-radius: 36px 36px 28px 28px;
 }
@@ -48,10 +58,15 @@ body {
   border-radius: 28px;
 }
 
-/* Patrón de huellitas (versión clara) */
-.huellas {
-  background-image: radial-gradient(rgba(59, 42, 30, 0.1) 1.5px, transparent 1.6px);
-  background-size: 26px 26px;
+/* Textura sutil de estrellas / chispas de noche */
+.noche-estrellada {
+  background-image: radial-gradient(rgba(255, 165, 80, 0.12) 1.5px, transparent 1.6px);
+  background-size: 30px 30px;
+}
+
+/* Telaraña ornamental en esquina */
+.telarana-bg {
+  background-image: radial-gradient(circle at 100% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 60%);
 }
 
 .grano::after {
@@ -59,14 +74,19 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.35;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E");
 }
 
 @keyframes flota {
   0%, 100% { transform: translateY(0) rotate(-1deg); }
-  50% { transform: translateY(-14px) rotate(1.5deg); }
+  50% { transform: translateY(-12px) rotate(1.5deg); }
+}
+
+@keyframes flotaLenta {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(-2deg); }
 }
 
 @keyframes marquee {
@@ -78,9 +98,20 @@ body {
   to { transform: rotate(360deg); }
 }
 
-@keyframes parpadeo {
-  0%, 92%, 100% { transform: scaleY(1); }
-  95% { transform: scaleY(0.08); }
+@keyframes flicker {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 15px rgba(255, 117, 24, 0.6)); }
+  25% { opacity: 0.88; filter: drop-shadow(0 0 8px rgba(255, 117, 24, 0.3)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 22px rgba(255, 117, 24, 0.8)); }
+  75% { opacity: 0.92; filter: drop-shadow(0 0 12px rgba(255, 117, 24, 0.5)); }
+}
+
+@keyframes pulsoCalabaza {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 117, 24, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 117, 24, 0.55);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -93,17 +124,17 @@ body {
 }
 
 ::selection {
-  background: #ff5c8a;
-  color: #17101f;
+  background: #ff7518;
+  color: #0d0714;
 }
 
-/* Scrollbar felina */
+/* Scrollbar de Halloween */
 ::-webkit-scrollbar { width: 12px; }
-::-webkit-scrollbar-track { background: #f6ecdd; }
+::-webkit-scrollbar-track { background: #0d0714; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(#b08d5f, #7c6247);
+  background: linear-gradient(180deg, #ff7518, #9333ea);
   border-radius: 99px;
-  border: 3px solid #f6ecdd;
+  border: 3px solid #0d0714;
 }
 
 details > summary {
@@ -115,7 +146,8 @@ details > summary::-webkit-details-marker {
 }
 details[open] .mas {
   transform: rotate(45deg);
+  background: #ff7518;
 }
 .mas {
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }

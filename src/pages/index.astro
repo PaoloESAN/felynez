@@ -1,224 +1,332 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import CatViewer from "../components/CatViewer.astro";
 import GatoClicker from "../components/GatoClicker.astro";
+import PumpkinClicker from "../components/PumpkinClicker.astro";
 ---
 
-<Layout title="Felynez — clicker antiestrés 3D y portacelular gatuno">
-  <div class="relative min-h-screen overflow-clip bg-[#f6ecdd] text-[#3b2a1e]">
-    <!-- ambiente claro -->
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-      <div class="absolute -top-32 -left-32 h-[480px] w-[480px] rounded-full bg-[#ffd9e4]/60 blur-[120px]"></div>
-      <div class="absolute top-40 -right-40 h-[520px] w-[520px] rounded-full bg-[#e3d9ff]/60 blur-[130px]"></div>
-      <div class="absolute bottom-0 left-1/3 h-[380px] w-[380px] rounded-full bg-[#ffe6bd]/70 blur-[110px]"></div>
-      <div class="huellas absolute inset-0 opacity-70"></div>
+<Layout title="Felynez Halloween 🎃 — Michi Calabaza 3D con 3 Caritas & Clickers Antiestrés">
+  <div class="relative min-h-screen overflow-clip bg-[#0d0714] text-[#fff0db] noche-estrellada">
+    <!-- Luces y atmósfera embrujada de fondo -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
+      <div class="absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full bg-[#ff7518]/18 blur-[140px]"></div>
+      <div class="absolute top-48 -right-40 h-[560px] w-[560px] rounded-full bg-[#8b5cf6]/20 blur-[150px]"></div>
+      <div class="absolute top-1/2 left-1/4 h-[420px] w-[420px] rounded-full bg-[#2ee6a8]/10 blur-[130px]"></div>
+      <div class="absolute bottom-10 right-1/3 h-[500px] w-[500px] rounded-full bg-[#ff5500]/15 blur-[160px]"></div>
+      
+      <!-- Murciélagos decorativos flotantes -->
+      <div class="absolute top-24 left-[8%] text-2xl opacity-40 animate-flota">🦇</div>
+      <div class="absolute top-40 right-[12%] text-3xl opacity-35 animate-flota-lenta">🦇</div>
+      <div class="absolute top-[55%] left-[5%] text-xl opacity-30 animate-flota">🦇</div>
+      <div class="absolute top-[75%] right-[6%] text-2xl opacity-30 animate-flota-lenta">👻</div>
+      
+      <!-- Telaraña en esquina superior derecha -->
+      <div class="telarana-bg absolute top-0 right-0 h-96 w-96 opacity-60"></div>
+    </div>
+
+    <!-- BANNER DE HALLOWEEN -->
+    <div class="relative z-30 border-b border-[#ff7518]/25 bg-gradient-to-r from-[#200e33] via-[#ff7518]/20 to-[#200e33] py-2 px-4 text-center text-xs font-black tracking-widest text-[#ffaa44] backdrop-blur-md">
+      <span class="inline-flex items-center gap-2">
+        <span class="animate-pulse">🎃</span>
+        <span>EDICIÓN ESPECIAL HALLOWEEN · ¡NUEVO MISHI CALABAZA CON 3 CARITAS DE GATO!</span>
+        <span class="animate-pulse">🦇</span>
+      </span>
     </div>
 
     <!-- NAV -->
     <header class="relative z-20 mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 pt-6 md:px-8">
-      <a href="/" class="flex min-w-0 items-center gap-3">
-        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#3b2a1e] text-2xl shadow-[0_10px_30px_rgba(59,42,30,.3)]">🐱</span>
+      <a href="/" class="flex min-w-0 items-center gap-3 group">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#ff7518] to-[#9333ea] text-2xl shadow-[0_0_25px_rgba(255,117,24,0.45)] transition-transform group-hover:scale-105">
+          🎃
+        </span>
         <span class="leading-none">
-          <span class="font-display block text-2xl font-semibold tracking-tight">Felynez</span>
-          <span class="block text-xs font-bold tracking-[0.22em] text-[#3b2a1e]/55">JUGUETES 3D</span>
+          <span class="font-display block text-2xl font-black tracking-tight text-white group-hover:text-[#ffaa44] transition-colors">
+            Felynez
+          </span>
+          <span class="block text-[11px] font-black tracking-[0.22em] text-[#ff7518]">HALLOWEEN 3D</span>
         </span>
       </a>
-      <nav class="hidden items-center gap-7 text-sm font-bold text-[#3b2a1e]/70 md:flex">
-        <a href="#manada" class="transition hover:text-[#3b2a1e]">Los michis</a>
-        <a href="#visor" class="transition hover:text-[#3b2a1e]">Pruébalo</a>
-        <a href="#como-funciona" class="transition hover:text-[#3b2a1e]">Cómo funciona</a>
-        <a href="#preguntas" class="transition hover:text-[#3b2a1e]">Preguntas</a>
+
+      <nav class="hidden items-center gap-8 text-sm font-extrabold text-[#ffd9b3]/75 md:flex">
+        <a href="#manada" class="transition hover:text-[#ff7518] hover:drop-shadow-[0_0_8px_rgba(255,117,24,0.8)]">Los Michis</a>
+        <a href="#calabaza-visor" class="transition hover:text-[#ff7518] hover:drop-shadow-[0_0_8px_rgba(255,117,24,0.8)]">Mishi Calabaza</a>
+        <a href="#como-funciona" class="transition hover:text-[#ff7518] hover:drop-shadow-[0_0_8px_rgba(255,117,24,0.8)]">Cómo funciona</a>
+        <a href="#preguntas" class="transition hover:text-[#ff7518] hover:drop-shadow-[0_0_8px_rgba(255,117,24,0.8)]">Preguntas</a>
       </nav>
+
       <div class="flex shrink-0 items-center gap-3">
-        <a href="#manada" class="hidden rounded-full border border-[#3b2a1e]/15 bg-white/60 px-5 py-2.5 text-sm font-extrabold backdrop-blur transition hover:bg-white sm:block">
-          Ver michis
+        <a
+          href="#manada"
+          class="hidden rounded-full border border-[#ff7518]/30 bg-[#1e1133]/60 px-5 py-2.5 text-sm font-black text-[#ffd9b3] backdrop-blur transition hover:bg-[#ff7518]/20 hover:text-white sm:block"
+        >
+          Ver michis 🐾
         </a>
-        <a href="#pedido" class="rounded-full bg-[#ff5c8a] px-5 py-2.5 text-sm font-extrabold text-white shadow-[0_12px_32px_rgba(255,92,138,.4)] transition hover:brightness-110 active:scale-95">
-          Pedir el mío
+        <a
+          href="#pedido"
+          class="rounded-full bg-gradient-to-r from-[#ff7518] via-[#ff8c1a] to-[#ff5500] px-5 py-2.5 text-sm font-black text-[#0d0714] shadow-[0_0_30px_rgba(255,117,24,0.5)] transition hover:brightness-110 active:scale-95"
+        >
+          Pedir el mío 🎃
         </a>
       </div>
     </header>
 
-    <!-- HERO -->
-    <section id="visor" class="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-5 pt-12 pb-10 md:grid-cols-[1.05fr_.95fr] md:px-8 md:pt-16">
+    <!-- HERO SECTION -->
+    <section id="calabaza-visor" class="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-5 pt-10 pb-12 md:grid-cols-[1.05fr_.95fr] md:px-8 md:pt-14">
       <div>
-        <h1 class="font-display text-balance mt-2 text-5xl leading-[0.95] font-semibold tracking-tight md:text-7xl">
-          Un gato antiestrés<br />
-          <span class="relative inline-block text-[#ff5c8a]">
-            que salta
+        <h1 class="font-display text-balance mt-4 text-5xl leading-[0.95] font-black tracking-tight md:text-7xl">
+          Un gato calabaza<br />
+          <span class="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#ff7518] via-[#ffaa44] to-[#ff5500] drop-shadow-[0_0_30px_rgba(255,117,24,0.6)]">
+            embrujado
             <svg viewBox="0 0 220 22" class="absolute -bottom-2 left-0 w-full" fill="none" aria-hidden="true">
-              <path d="M4 15 C 60 6, 150 6, 216 12" stroke="#e8930c" stroke-width="7" stroke-linecap="round" />
+              <path d="M4 15 C 60 4, 150 4, 216 12" stroke="#ff7518" stroke-width="7" stroke-linecap="round" />
             </svg>
           </span><br />
-          de su cajita.
+          que salta a saludarte.
         </h1>
 
-        <p class="mt-7 max-w-md text-lg leading-relaxed text-[#3b2a1e]/70">
-          Somos <strong class="text-[#3b2a1e]">Felynez</strong> y hacemos juguetes gatunos en 3D.
-          Clickea al michi de aquí abajo: se esconde en su caja, salta a saludarte y cuenta tus caricias.
-          Y si necesitas recostar tu celular, su hermanito portacelular lo sostiene por ti.
+        <p class="mt-7 max-w-md text-lg leading-relaxed text-[#ffd9b3]/80">
+          Somos <strong class="text-white">Felynez</strong> y hacemos juguetes gatunos en 3D.
+          Para esta temporada creamos el <strong class="text-[#ffaa44]">Mishi Calabaza</strong>: incluye 1 calabaza tallada y <strong class="text-white">3 caritas de gato intercambiables</strong>.
+          Clickea al gato en el visor 3D para probar su resorte táctil y cambia sus expresiones.
         </p>
 
         <div class="mt-8 flex flex-wrap items-center gap-4">
-          <a href="#manada" class="rounded-full bg-[#3b2a1e] px-7 py-3.5 font-display text-lg font-semibold text-[#fff8ee] shadow-[0_16px_40px_rgba(59,42,30,.25)] transition hover:-translate-y-0.5">
-            Ver los dos michis
+          <a
+            href="#pedido"
+            class="rounded-full bg-gradient-to-r from-[#ff7518] to-[#e65100] px-7 py-3.5 font-display text-lg font-black text-[#0d0714] shadow-[0_12px_35px_rgba(255,117,24,0.4)] transition hover:-translate-y-0.5 hover:brightness-110 active:scale-95"
+          >
+            Quiero mi Calabaza 🎃
           </a>
-          <a href="#como-funciona" class="rounded-full border border-[#3b2a1e]/15 bg-white/60 px-7 py-3.5 font-display text-lg font-semibold backdrop-blur transition hover:bg-white">
-            Cómo funciona
+          <a
+            href="#manada"
+            class="rounded-full border border-purple-500/40 bg-[#1a0f2e]/70 px-7 py-3.5 font-display text-lg font-bold text-[#ffd9b3] backdrop-blur transition hover:bg-purple-900/30 hover:text-white"
+          >
+            Ver los 2 clickers
           </a>
         </div>
 
-        <dl class="mt-10 flex flex-wrap gap-x-10 gap-y-4">
-          <div>
-            <dt class="font-display text-3xl font-semibold text-[#d97706]">2</dt>
-            <dd class="text-sm font-bold text-[#3b2a1e]/60">modelos: clicker y portacelular</dd>
+        <dl class="mt-10 flex flex-wrap gap-x-8 gap-y-4">
+          <div class="rounded-2xl border border-[#ff7518]/20 bg-[#170c26]/60 p-3.5 min-w-[130px]">
+            <dt class="font-display text-3xl font-black text-[#ffaa44]">1 + 3</dt>
+            <dd class="text-xs font-bold text-[#ffd9b3]/70">1 calabaza + 3 caritas de gato</dd>
           </div>
-          <div>
-            <dt class="font-display text-3xl font-semibold text-[#d97706]">PLA+</dt>
-            <dd class="text-sm font-bold text-[#3b2a1e]/60">filamento PLA+ premium, bordes suaves</dd>
+          <div class="rounded-2xl border border-purple-500/20 bg-[#170c26]/60 p-3.5 min-w-[130px]">
+            <dt class="font-display text-3xl font-black text-purple-400">PLA+</dt>
+            <dd class="text-xs font-bold text-[#ffd9b3]/70">filamento premium, tacto suave</dd>
           </div>
-          <div>
-            <dt class="font-display text-3xl font-semibold text-[#d97706]">48 h</dt>
-            <dd class="text-sm font-bold text-[#3b2a1e]/60">envío a todo el país</dd>
+          <div class="rounded-2xl border border-[#2ee6a8]/20 bg-[#170c26]/60 p-3.5 min-w-[130px]">
+            <dt class="font-display text-3xl font-black text-[#2ee6a8]">100%</dt>
+            <dd class="text-xs font-bold text-[#ffd9b3]/70">antiestrés garantizado</dd>
           </div>
         </dl>
       </div>
 
-      <!-- HERO 3D : clicker -->
+      <!-- HERO 3D : Gato Calabaza Clicker -->
       <div class="relative">
-        <div class="grano relative overflow-hidden rounded-[32px] border border-[#3b2a1e]/10 bg-white p-3 shadow-[0_30px_90px_rgba(59,42,30,.18)]">
+        <div class="grano relative overflow-hidden rounded-[34px] border border-[#ff7518]/30 bg-[#150d24] p-3 shadow-[0_25px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(255,117,24,0.18)]">
           <div class="flex items-center justify-between px-3 pt-2 pb-3">
-            <span class="text-xs font-bold text-[#3b2a1e]/60">Mishi Clicker · pruébalo aquí</span>
-            <div class="font-display text-xs font-semibold text-[#d63a68]">★ clickea al gato</div>
+            <span class="text-xs font-extrabold text-[#ffaa44] flex items-center gap-1.5">
+              <span>🎃</span>
+              <span>Mishi Calabaza · ¡Pruébalo en 3D!</span>
+            </span>
+            <div class="font-display text-xs font-black text-purple-300">
+              ★ clickea la carita
+            </div>
           </div>
 
-          <GatoClicker cajaSrc="/models/gato1-caja.glb" gatoSrc="/models/gato1-gato.glb" nombre="Mishi" />
+          <!-- Componente 3D Pumpkin Clicker -->
+          <PumpkinClicker alto="h-[400px] md:h-[480px]" />
 
           <div class="flex items-center justify-between gap-3 px-3 py-3">
-            <div class="flex -space-x-3">
-              <span class="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-[#ff8fb0] text-lg">🐈</span>
-              <span class="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-[#7c5cff] text-lg">🐈‍⬛</span>
-              <span class="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-[#f6ecdd] text-xs font-extrabold text-[#3b2a1e]">+2k</span>
+            <div class="flex -space-x-2.5">
+              <span class="grid h-9 w-9 place-items-center rounded-full border-2 border-[#150d24] bg-[#ff7518] text-base shadow">🎃</span>
+              <span class="grid h-9 w-9 place-items-center rounded-full border-2 border-[#150d24] bg-[#9333ea] text-base shadow">🐈‍⬛</span>
+              <span class="grid h-9 w-9 place-items-center rounded-full border-2 border-[#150d24] bg-[#2ee6a8] text-base shadow">👻</span>
+              <span class="grid h-9 w-9 place-items-center rounded-full border-2 border-[#150d24] bg-[#231539] text-xs font-black text-[#ffaa44]">+3k</span>
             </div>
-            <p class="text-xs font-bold text-[#3b2a1e]/55">Más de 2,000 caricias contadas esta semana</p>
+            <p class="text-xs font-bold text-[#ffd9b3]/60">Más de 3,500 sustos y caricias contadas</p>
           </div>
         </div>
 
-        <!-- sticker flotante (solo escritorio para no tapar nada) -->
-        <div class="font-display absolute top-40 right-0 hidden rounded-2xl border border-[#3b2a1e]/10 bg-white px-4 py-3 text-[#3b2a1e] shadow-xl animate-flota md:block lg:-right-8">
-          <p class="text-xs font-bold opacity-60">incluye</p>
-          <p class="text-lg font-semibold">Caja + gato 📦</p>
+        <!-- Sticker flotante decorativo -->
+        <div class="font-display absolute -top-5 -right-4 hidden rounded-2xl border border-[#ff7518]/40 bg-[#1a0e2d] px-4 py-3 text-white shadow-[0_10px_30px_rgba(0,0,0,0.6)] animate-flota md:block lg:-right-6">
+          <p class="text-[10px] font-black text-[#ffaa44] tracking-widest uppercase">Incluye</p>
+          <p class="text-base font-black">1 Calabaza + 3 Caritas 🐱</p>
         </div>
       </div>
     </section>
 
-    <!-- MARQUESINA -->
-    <div class="relative z-10 -rotate-1 border-y-2 border-[#3b2a1e] bg-[#ffb84d] py-3 text-[#3b2a1e] shadow-[0_10px_40px_rgba(232,147,12,.25)]">
-      <div class="flex w-max animate-marquee gap-8 pr-8 font-display text-lg font-semibold whitespace-nowrap">
-        <span>clic clic clic 🐾</span><span>·</span><span>antiestrés garantizado 😌</span><span>·</span>
-        <span>recuesta tu celular 📱</span><span>·</span><span>impreso en 3D 🖨️</span><span>·</span>
-        <span>regalo perfecto 🎁</span><span>·</span><span>hecho con amor 💛</span><span>·</span>
-        <span>clic clic clic 🐾</span><span>·</span><span>antiestrés garantizado 😌</span><span>·</span>
-        <span>recuesta tu celular 📱</span><span>·</span><span>impreso en 3D 🖨️</span><span>·</span>
-        <span>regalo perfecto 🎁</span><span>·</span><span>hecho con amor 💛</span><span>·</span>
+    <!-- MARQUESINA HALLOWEEN -->
+    <div class="relative z-10 -rotate-1 border-y-2 border-[#ff7518] bg-gradient-to-r from-[#ff7518] via-[#ffa733] to-[#ff5500] py-3 text-[#0d0714] shadow-[0_0_35px_rgba(255,117,24,0.45)]">
+      <div class="flex w-max animate-marquee gap-8 pr-8 font-display text-lg font-black whitespace-nowrap uppercase tracking-wider">
+        <span>¡truco o caricia! 🎃</span><span>·</span>
+        <span>clic clic clic embrujado 👻</span><span>·</span>
+        <span>3 caritas intercambiables 🐱</span><span>·</span>
+        <span>antiestrés garantizado 😌</span><span>·</span>
+        <span>impreso en 3D 🖨️</span><span>·</span>
+        <span>edición limitada noche de brujas 🕯️</span><span>·</span>
+        <span>regalo perfecto 🎁</span><span>·</span>
+        <span>hecho con amor y sustitos 🧡</span><span>·</span>
+        <span>¡truco o caricia! 🎃</span><span>·</span>
+        <span>clic clic clic embrujado 👻</span><span>·</span>
+        <span>3 caritas intercambiables 🐱</span><span>·</span>
+        <span>antiestrés garantizado 😌</span><span>·</span>
+        <span>impreso en 3D 🖨️</span><span>·</span>
+        <span>edición limitada noche de brujas 🕯️</span><span>·</span>
+        <span>regalo perfecto 🎁</span><span>·</span>
+        <span>hecho con amor y sustitos 🧡</span><span>·</span>
       </div>
     </div>
 
-    <!-- PRODUCTOS -->
+    <!-- SECCIÓN DE PRODUCTOS: CAJA Y CALABAZA -->
     <section id="manada" class="relative z-10 mx-auto max-w-6xl px-5 py-20 md:px-8">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <div class="max-w-xl">
-          <p class="font-display inline-block rounded-full border border-[#ff5c8a]/30 bg-[#ff5c8a]/10 px-4 py-1.5 text-sm font-semibold text-[#d63a68]">Los dos michis</p>
-          <h2 class="font-display text-balance mt-4 text-4xl font-semibold tracking-tight md:text-6xl">Uno se esconde, el otro sostiene tu celular</h2>
+          <p class="font-display inline-block rounded-full border border-[#ff7518]/40 bg-[#ff7518]/15 px-4 py-1.5 text-sm font-black text-[#ffaa44]">
+            LA COLECCIÓN DE HALLOWEEN
+          </p>
+          <h2 class="font-display text-balance mt-4 text-4xl font-black tracking-tight text-white md:text-6xl">
+            Dos clickers mágicos para tu escritorio
+          </h2>
         </div>
-        <p class="max-w-sm text-[#3b2a1e]/65">Juguetes de escritorio impresos en 3D. Gíralos, clickea al de la caja y elige cuál se va contigo.</p>
+        <p class="max-w-sm text-sm text-[#ffd9b3]/75 leading-relaxed">
+          Presiona la carita del michi o de la calabaza: se sumergen con un clic mecánico y rebotan al instante. Juega con ellos aquí mismo en 3D.
+        </p>
       </div>
 
       <div class="mt-12 grid gap-8 md:grid-cols-2">
-        <!-- Producto 1 : clicker caja + gato -->
-        <article class="arco-gato group relative overflow-hidden border border-[#3b2a1e]/10 bg-white p-4 pt-6 text-[#3b2a1e] shadow-[0_30px_80px_rgba(59,42,30,.18)]">
-          <div class="px-4 text-center">
-            <p class="inline-block rounded-full bg-[#3b2a1e] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#ffb84d]">CLICKER ANTIESTRÉS</p>
-            <h3 class="font-display mt-3 text-4xl font-semibold">Mishi en su Caja</h3>
-            <p class="mt-1 min-h-[2.75rem] font-bold text-[#3b2a1e]/60">Gato + caja · lo clickeas, se esconde y salta</p>
+        <!-- Producto 1 : Mishi Calabaza (Nuevo modelo estrella de Halloween) -->
+        <article class="arco-gato group relative overflow-hidden border-2 border-[#ff7518]/50 bg-gradient-to-b from-[#1c0f30] via-[#140a22] to-[#0d0714] p-5 pt-7 text-[#fff0db] shadow-[0_25px_70px_rgba(0,0,0,0.8),0_0_35px_rgba(255,117,24,0.2)]">
+          <div class="px-3 text-center">
+            <span class="inline-block rounded-full bg-[#ff7518] px-4 py-1.5 text-xs font-black tracking-widest text-[#0d0714] shadow-[0_0_15px_rgba(255,117,24,0.6)]">
+              ¡NUEVO! EDICIÓN HALLOWEEN 🎃
+            </span>
+            <h3 class="font-display mt-3 text-3xl sm:text-4xl font-black text-white">Mishi Calabaza 3 en 1</h3>
+            <p class="mt-1 min-h-[2.75rem] font-bold text-sm text-[#ffaa44]">
+              1 Calabaza + 3 Caritas de gato intercambiables (Pícaro o.<, Travieso >.<, Curioso o.o)
+            </p>
           </div>
 
-          <div class="mt-5 overflow-hidden rounded-[24px]">
-            <GatoClicker cajaSrc="/models/gato1-caja.glb" gatoSrc="/models/gato1-gato.glb" nombre="Mishi" alto="h-[360px] md:h-[420px]" />
+          <div class="mt-4 overflow-hidden rounded-[26px]">
+            <PumpkinClicker alto="h-[360px] md:h-[420px]" />
           </div>
 
           <div class="flex flex-wrap gap-2 px-2 pt-5">
-            <span class="rounded-full border border-[#3b2a1e]/10 bg-[#f6ecdd] px-3 py-1.5 text-xs font-extrabold">📦 se esconde y salta</span>
-            <span class="rounded-full border border-[#3b2a1e]/10 bg-[#f6ecdd] px-3 py-1.5 text-xs font-extrabold">😌 clic satisfactorio</span>
+            <span class="rounded-full border border-[#ff7518]/30 bg-[#24133b] px-3 py-1.5 text-xs font-extrabold text-[#ffd9b3]">
+              🎃 1 calabaza + 3 caritas
+            </span>
+            <span class="rounded-full border border-[#ff7518]/30 bg-[#24133b] px-3 py-1.5 text-xs font-extrabold text-[#ffd9b3]">
+              😌 resorte mecánico antiestrés
+            </span>
+            <span class="rounded-full border border-[#ff7518]/30 bg-[#24133b] px-3 py-1.5 text-xs font-extrabold text-[#ffd9b3]">
+              🍬 calcomanías de Halloween
+            </span>
           </div>
 
-          <div class="flex flex-wrap items-center justify-between gap-4 px-3 pt-6 pb-3">
+          <div class="flex flex-wrap items-center justify-between gap-4 px-3 pt-6 pb-2">
             <div>
-              <p class="text-xs font-extrabold tracking-widest text-[#3b2a1e]/50">CAJA + GATO</p>
-              <p class="font-display text-3xl font-semibold">S/ 7</p>
-              <p class="text-xs font-bold text-[#3b2a1e]/55">con calcomanías de regalo</p>
+              <p class="text-xs font-black tracking-widest text-[#ffaa44]">CALABAZA + 3 CARITAS</p>
+              <p class="font-display text-4xl font-black text-white">S/ 9</p>
+              <p class="text-xs font-bold text-[#ffd9b3]/60">incluye las 3 expresiones</p>
             </div>
-            <a href="#pedido" class="rounded-full bg-[#3b2a1e] px-6 py-3.5 font-display font-semibold text-[#fff8ee] transition group-hover:bg-[#ff5c8a] group-hover:text-white">Lo quiero</a>
+            <a
+              href="#pedido"
+              class="rounded-full bg-gradient-to-r from-[#ff7518] to-[#e65100] px-7 py-3.5 font-display font-black text-[#0d0714] shadow-[0_0_20px_rgba(255,117,24,0.45)] transition hover:scale-105 hover:brightness-110 active:scale-95"
+            >
+              Pedir Calabaza 🎃
+            </a>
           </div>
         </article>
 
-        <!-- Producto 2 : portacelular -->
-        <article class="arco-gato relative overflow-hidden border border-[#3b2a1e]/10 bg-white p-4 pt-6 text-[#3b2a1e] shadow-[0_30px_80px_rgba(59,42,30,.18)]">
-          <div class="px-4 text-center">
-            <p class="inline-block rounded-full bg-[#ffb84d] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#3b2a1e]">PORTACELULAR</p>
-            <h3 class="font-display mt-3 text-4xl font-semibold">Mishi Portacelular</h3>
-            <p class="mt-1 min-h-[2.75rem] font-bold text-[#3b2a1e]/60">Recuesta tu teléfono en su pancita y mira series con él</p>
+        <!-- Producto 2 : Mishi en su Caja (Clicker Clásico) -->
+        <article class="arco-gato group relative overflow-hidden border border-purple-500/30 bg-gradient-to-b from-[#180e2a] via-[#120820] to-[#0d0714] p-5 pt-7 text-[#fff0db] shadow-[0_25px_70px_rgba(0,0,0,0.7)]">
+          <div class="px-3 text-center">
+            <span class="inline-block rounded-full bg-purple-600/80 px-4 py-1.5 text-xs font-black tracking-widest text-purple-100 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+              CLICKER CLÁSICO 📦
+            </span>
+            <h3 class="font-display mt-3 text-3xl sm:text-4xl font-black text-white">Mishi en su Caja</h3>
+            <p class="mt-1 min-h-[2.75rem] font-bold text-sm text-purple-300">
+              Gato + caja con resorte · Clickeas al michi, se sumerge en su caja y salta
+            </p>
           </div>
 
-          <div class="mt-5 overflow-hidden rounded-[24px]">
-            <CatViewer src="/models/gato2-portacelular.glb" nombre="Mishi Portacelular" alto="h-[360px] md:h-[420px]" />
+          <div class="mt-4 overflow-hidden rounded-[26px]">
+            <GatoClicker cajaSrc="/models/gato1-caja.glb" gatoSrc="/models/gato1-gato.glb" nombre="Mishi en su Caja" alto="h-[360px] md:h-[420px]" />
           </div>
 
           <div class="flex flex-wrap gap-2 px-2 pt-5">
-            <span class="rounded-full border border-[#3b2a1e]/10 bg-[#f6ecdd] px-3 py-1.5 text-xs font-extrabold">😴 ángulo perfecto para series</span>
-            <span class="rounded-full border border-[#3b2a1e]/10 bg-[#f6ecdd] px-3 py-1.5 text-xs font-extrabold">🎁 regalo perfecto</span>
+            <span class="rounded-full border border-purple-500/30 bg-[#221239] px-3 py-1.5 text-xs font-extrabold text-[#ffd9b3]">
+              📦 se esconde y salta
+            </span>
+            <span class="rounded-full border border-purple-500/30 bg-[#221239] px-3 py-1.5 text-xs font-extrabold text-[#ffd9b3]">
+              😌 clic satisfactorio
+            </span>
+            <span class="rounded-full border border-purple-500/30 bg-[#221239] px-3 py-1.5 text-xs font-extrabold text-[#ffd9b3]">
+              🎁 calcomanías de regalo
+            </span>
           </div>
 
-          <div class="flex flex-wrap items-center justify-between gap-4 px-3 pt-6 pb-3">
+          <div class="flex flex-wrap items-center justify-between gap-4 px-3 pt-6 pb-2">
             <div>
-              <p class="font-display text-3xl font-semibold">S/ 10</p>
-              <p class="text-xs font-bold text-[#3b2a1e]/55">con calcomanías de regalo</p>
+              <p class="text-xs font-black tracking-widest text-purple-300">CAJA + GATO</p>
+              <p class="font-display text-4xl font-black text-white">S/ 7</p>
+              <p class="text-xs font-bold text-[#ffd9b3]/60">con calcomanías de regalo</p>
             </div>
-            <a href="#pedido" class="rounded-full bg-[#3b2a1e] px-6 py-3.5 font-display font-semibold text-[#fff8ee] transition hover:bg-[#ff5c8a] hover:text-white">Lo quiero</a>
+            <a
+              href="#pedido"
+              class="rounded-full bg-purple-600 px-7 py-3.5 font-display font-black text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] transition hover:bg-[#ff7518] hover:text-[#0d0714] hover:scale-105 active:scale-95"
+            >
+              Pedir Mishi Caja 📦
+            </a>
           </div>
         </article>
       </div>
     </section>
 
-    <!-- POR QUÉ -->
-    <section class="relative z-10 border-y border-[#3b2a1e]/10 bg-white/50 py-16 backdrop-blur">
+    <!-- POR QUÉ NUESTROS MICHIS EN HALLOWEEN -->
+    <section class="relative z-10 border-y border-[#ff7518]/20 bg-[#140b22]/70 py-16 backdrop-blur">
       <div class="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-[.9fr_1.1fr] md:px-8">
         <div>
-          <h2 class="font-display text-balance text-4xl font-semibold md:text-5xl">Un taller, no una tienda</h2>
-          <p class="mt-4 leading-relaxed text-[#3b2a1e]/65">
-            Diseñamos cada michi en 3D, lo imprimimos con filamento premium y lo revisamos pieza por pieza.
-            Salen del taller suavecitos, sin rebabas y listos para tu escritorio.
+          <span class="text-xs font-black tracking-widest text-[#ffaa44] uppercase">Taller Artesanal 3D</span>
+          <h2 class="font-display text-balance mt-2 text-4xl font-black text-white md:text-5xl">
+            Tallado en 3D, no en una fábrica masiva
+          </h2>
+          <p class="mt-4 leading-relaxed text-[#ffd9b3]/75">
+            Modelamos cada calabaza y carita en 3D con filamento PLA+ premium en colores vibrantes.
+            Cada resorte mecánico se calibra a mano para dar un clic adictivo y suave que alivia el estrés en tu escritorio.
           </p>
-          <div class="mt-6 flex items-center gap-4 rounded-2xl border border-[#0b7a55]/25 bg-[#0b7a55]/10 p-4">
-            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#0b7a55] text-2xl">🖨️</span>
-            <p class="text-sm leading-relaxed"><strong>Calidad primero:</strong> bordes suaves, colores firmes y control pieza por pieza. Si no pasa la revisión, el michi no viaja.</p>
+          <div class="mt-6 flex items-center gap-4 rounded-2xl border border-[#ff7518]/30 bg-[#ff7518]/10 p-4">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#ff7518] text-2xl text-[#0d0714]">
+              🎃
+            </span>
+            <p class="text-sm leading-relaxed text-[#ffd9b3]">
+              <strong class="text-white">Control pieza por pieza:</strong> bordes suaves, colores firmes y resorte mecánico probado antes de empacar. Si no hace un clic perfecto, no viaja.
+            </p>
           </div>
         </div>
+
         <div class="grid gap-4 sm:grid-cols-3">
-          <div class="rounded-3xl border border-[#3b2a1e]/10 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+          <div class="rounded-3xl border border-[#ff7518]/20 bg-[#180e2a] p-6 shadow-md transition hover:-translate-y-1 hover:border-[#ff7518]/50">
             <div class="text-4xl">😌</div>
-            <h3 class="font-display mt-4 text-xl font-semibold">Antiestrés real</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">El clic del gatito es adictivo. Para juntas largas, tráfico mental y tardes de tarea.</p>
+            <h3 class="font-display mt-4 text-xl font-black text-white">Antiestrés Real</h3>
+            <p class="mt-2 text-xs leading-relaxed text-[#ffd9b3]/70">
+              El clic mecánico del michi es súper adictivo para reuniones largas, llamadas y momentos de concentración.
+            </p>
           </div>
-          <div class="rounded-3xl border border-[#3b2a1e]/10 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-            <div class="text-4xl">📱</div>
-            <h3 class="font-display mt-4 text-xl font-semibold">Manos libres</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">El portacelular sostiene tu teléfono con el ángulo justo para series y videollamadas.</p>
+
+          <div class="rounded-3xl border border-purple-500/20 bg-[#180e2a] p-6 shadow-md transition hover:-translate-y-1 hover:border-purple-500/50">
+            <div class="text-4xl">🐱</div>
+            <h3 class="font-display mt-4 text-xl font-black text-white">3 Caritas en 1</h3>
+            <p class="mt-2 text-xs leading-relaxed text-[#ffd9b3]/70">
+              Cambia la cara del gato calabaza cuando quieras: pícaro, travieso o asombrado según tu estado de ánimo.
+            </p>
           </div>
-          <div class="rounded-3xl border border-[#3b2a1e]/10 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-            <div class="text-4xl">💌</div>
-            <h3 class="font-display mt-4 text-xl font-semibold">Listo para regalar</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">Llega en su cajita con calcomanías. Solo falta escribir la notita.</p>
+
+          <div class="rounded-3xl border border-[#2ee6a8]/20 bg-[#180e2a] p-6 shadow-md transition hover:-translate-y-1 hover:border-[#2ee6a8]/50">
+            <div class="text-4xl">🎁</div>
+            <h3 class="font-display mt-4 text-xl font-black text-white">Listo para Regalar</h3>
+            <p class="mt-2 text-xs leading-relaxed text-[#ffd9b3]/70">
+              Llega en cajita temática de Halloween con stickers de regalo. ¡El obsequio más original de Noche de Brujas!
+            </p>
           </div>
         </div>
       </div>
@@ -226,27 +334,46 @@ import GatoClicker from "../components/GatoClicker.astro";
 
     <!-- CÓMO FUNCIONA -->
     <section id="como-funciona" class="relative z-10 mx-auto max-w-6xl px-5 py-20 md:px-8">
-      <h2 class="font-display text-center text-4xl font-semibold md:text-6xl">De tu pantalla a tu escritorio</h2>
-      <p class="mx-auto mt-4 max-w-lg text-center text-[#3b2a1e]/60">Tres pasos y un michi en camino.</p>
+      <div class="text-center">
+        <span class="text-xs font-black tracking-widest text-[#ffaa44] uppercase">Fácil y Rápido</span>
+        <h2 class="font-display mt-2 text-4xl font-black text-white md:text-6xl">
+          De la calabaza mágica a tu escritorio
+        </h2>
+        <p class="mx-auto mt-4 max-w-lg text-sm text-[#ffd9b3]/70">Tres pasos y tu michi de Halloween va en camino.</p>
+      </div>
 
       <ol class="mt-12 grid items-start gap-6 md:grid-cols-3">
-        <li class="relative overflow-hidden rounded-3xl border border-[#3b2a1e]/10 bg-white p-7 shadow-sm">
-          <span class="font-display text-6xl font-semibold text-[#3b2a1e]/10">1</span>
-          <h3 class="font-display mt-2 text-2xl font-semibold">Juega aquí mismo</h3>
-          <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">Clickea al gato del visor, suma caricias y gira al portacelular para ver cada detalle.</p>
-          <p class="mt-4 inline-block rounded-full border border-[#e8930c]/30 bg-[#ffb84d]/20 px-3 py-1 text-xs font-extrabold text-[#92580a]">⏱ 2 minutos</p>
+        <li class="relative overflow-hidden rounded-3xl border border-[#ff7518]/25 bg-[#170c26] p-7 shadow-lg">
+          <span class="font-display text-6xl font-black text-[#ff7518]/20">1</span>
+          <h3 class="font-display mt-2 text-2xl font-black text-white">Juega en 3D</h3>
+          <p class="mt-2 text-sm leading-relaxed text-[#ffd9b3]/70">
+            Clickea a la calabaza, cambia sus 3 caritas y gira los modelos 3D para ver cada detalle antes de comprar.
+          </p>
+          <p class="mt-4 inline-block rounded-full border border-[#ff7518]/30 bg-[#ff7518]/15 px-3 py-1 text-xs font-black text-[#ffaa44]">
+            ⏱ Pruébalo gratis
+          </p>
         </li>
-        <li class="relative overflow-hidden rounded-3xl border border-[#ff5c8a]/25 bg-[#fff0f4] p-7 shadow-sm">
-          <span class="font-display text-6xl font-semibold text-[#ff5c8a]/20">2</span>
-          <h3 class="font-display mt-2 text-2xl font-semibold">Elige tu michi</h3>
-          <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">Clicker para tu escritorio o portacelular para tus series. O los dos, no juzgamos.</p>
-          <p class="mt-4 inline-block rounded-full border border-[#ff5c8a]/30 bg-[#ff5c8a]/10 px-3 py-1 text-xs font-extrabold text-[#d63a68]">🐾 con calcomanías</p>
+
+        <li class="relative overflow-hidden rounded-3xl border border-purple-500/25 bg-[#170c26] p-7 shadow-lg">
+          <span class="font-display text-6xl font-black text-purple-500/20">2</span>
+          <h3 class="font-display mt-2 text-2xl font-black text-white">Elige tu Michi</h3>
+          <p class="mt-2 text-sm leading-relaxed text-[#ffd9b3]/70">
+            Elige el Mishi Calabaza (con sus 3 caritas), el Mishi en su Caja clásico o el Combo Embrujado para coleccionar ambos.
+          </p>
+          <p class="mt-4 inline-block rounded-full border border-purple-500/30 bg-purple-500/15 px-3 py-1 text-xs font-black text-purple-300">
+            🐾 con stickers de regalo
+          </p>
         </li>
-        <li class="relative overflow-hidden rounded-3xl border border-[#0b7a55]/25 bg-[#e9f7f0] p-7 shadow-sm">
-          <span class="font-display text-6xl font-semibold text-[#0b7a55]/20">3</span>
-          <h3 class="font-display mt-2 text-2xl font-semibold">Recíbelo en casa</h3>
-          <p class="mt-2 text-sm leading-relaxed text-[#3b2a1e]/60">Envío en 48 h con su cajita. Si llega con algún detalle, lo reponemos sin costo.</p>
-          <p class="mt-4 inline-block rounded-full border border-[#0b7a55]/30 bg-[#0b7a55]/10 px-3 py-1 text-xs font-extrabold text-[#0b7a55]">🏡 garantía de 15 días</p>
+
+        <li class="relative overflow-hidden rounded-3xl border border-[#2ee6a8]/25 bg-[#170c26] p-7 shadow-lg">
+          <span class="font-display text-6xl font-black text-[#2ee6a8]/20">3</span>
+          <h3 class="font-display mt-2 text-2xl font-black text-white">Listo para Regalar</h3>
+          <p class="mt-2 text-sm leading-relaxed text-[#ffd9b3]/70">
+            Llega en su cajita de regalo listo para tu escritorio o para sacarle sustos y sonrisas a todos.
+          </p>
+          <p class="mt-4 inline-block rounded-full border border-[#2ee6a8]/30 bg-[#2ee6a8]/15 px-3 py-1 text-xs font-black text-[#2ee6a8]">
+            ✨ listo para regalar
+          </p>
         </li>
       </ol>
     </section>
@@ -254,101 +381,222 @@ import GatoClicker from "../components/GatoClicker.astro";
     <!-- TESTIMONIOS -->
     <section class="relative z-10 mx-auto max-w-6xl px-5 pb-20 md:px-8">
       <div class="grid items-start gap-6 md:grid-cols-3">
-        <figure class="-rotate-1 rounded-3xl bg-[#3b2a1e] p-7 text-[#fff8ee] shadow-xl">
-          <div class="text-lg tracking-wide">★★★★★</div>
-          <blockquote class="font-display mt-3 text-xl leading-snug font-medium">“Clickeamos el modelo 3D mil veces. En persona el clic suena todavía mejor.”</blockquote>
+        <figure class="-rotate-1 rounded-3xl border border-[#ff7518]/30 bg-[#1c0f30] p-7 text-[#fff0db] shadow-xl">
+          <div class="text-lg tracking-wide text-[#ffaa44]">★★★★★</div>
+          <blockquote class="font-display mt-3 text-lg leading-snug font-bold">
+            “El michi calabaza es la cosa más tierna del mundo. Cambiarle las 3 caritas es súper fácil y el clic suena riquísimo.”
+          </blockquote>
           <figcaption class="mt-4 flex items-center gap-3">
-            <span class="grid h-11 w-11 place-items-center rounded-full bg-[#ff5c8a] text-xl">👩</span>
-            <span class="text-sm"><strong>Valeria y Momo</strong><br /><span class="opacity-60">se llevaron la caja clicker</span></span>
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-[#ff7518] text-xl text-[#0d0714]">🎃</span>
+            <span class="text-xs"><strong>Camila y Salem</strong><br /><span class="text-[#ffd9b3]/60">pidieron el Mishi Calabaza</span></span>
           </figcaption>
         </figure>
-        <figure class="rotate-1 rounded-3xl bg-[#ffb84d] p-7 text-[#3b2a1e] shadow-xl md:translate-y-4">
-          <div class="text-lg tracking-wide">★★★★★</div>
-          <blockquote class="font-display mt-3 text-xl leading-snug font-medium">“El portacelular sostiene mi teléfono y mi corazón. Veo series con él.”</blockquote>
+
+        <figure class="rotate-1 rounded-3xl border border-purple-500/30 bg-[#180e2a] p-7 text-[#fff0db] shadow-xl md:translate-y-3">
+          <div class="text-lg tracking-wide text-purple-400">★★★★★</div>
+          <blockquote class="font-display mt-3 text-lg leading-snug font-bold">
+            “Lo tengo al lado de mi teclado y clickeo la calabaza cada vez que estoy en llamada. ¡Es adictivo y relaja un montón!”
+          </blockquote>
           <figcaption class="mt-4 flex items-center gap-3">
-            <span class="grid h-11 w-11 place-items-center rounded-full bg-[#3b2a1e] text-xl">🧑</span>
-            <span class="text-sm"><strong>Diego y Benito</strong><br /><span class="opacity-60">inseparables desde junio</span></span>
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-purple-600 text-xl">🧑‍💻</span>
+            <span class="text-xs"><strong>Renzo K.</strong><br /><span class="text-[#ffd9b3]/60">coleccionista de clickers</span></span>
           </figcaption>
         </figure>
-        <figure class="-rotate-1 rounded-3xl bg-[#0b7a55] p-7 text-white shadow-xl">
-          <div class="text-lg tracking-wide">★★★★★</div>
-          <blockquote class="font-display mt-3 text-xl leading-snug font-medium">“Lo pedí para mi sobrina y terminé quedándomelo yo. Pedí otro.”</blockquote>
+
+        <figure class="-rotate-1 rounded-3xl border border-[#2ee6a8]/30 bg-[#170e28] p-7 text-[#fff0db] shadow-xl">
+          <div class="text-lg tracking-wide text-[#2ee6a8]">★★★★★</div>
+          <blockquote class="font-display mt-3 text-lg leading-snug font-bold">
+            “El acabado 3D es suave y de altísima calidad. Mis compañeros de oficina no paran de pedirme que se los preste.”
+          </blockquote>
           <figcaption class="mt-4 flex items-center gap-3">
-            <span class="grid h-11 w-11 place-items-center rounded-full bg-white text-xl">👵</span>
-            <span class="text-sm"><strong>Doña Coco</strong><br /><span class="opacity-70">coleccionista de michis</span></span>
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-[#2ee6a8] text-xl text-[#0d0714]">👻</span>
+            <span class="text-xs"><strong>Lucía V.</strong><br /><span class="text-[#ffd9b3]/60">fan de Halloween</span></span>
           </figcaption>
         </figure>
       </div>
     </section>
 
     <!-- FAQ + PEDIDO -->
-    <section id="preguntas" class="relative z-10 mx-auto grid max-w-6xl items-start gap-10 px-5 pb-20 md:grid-cols-2 md:px-8">
+    <section id="preguntas" class="relative z-10 mx-auto grid max-w-6xl items-start gap-10 px-5 pb-24 md:grid-cols-2 md:px-8">
       <div>
-        <h2 class="font-display text-4xl font-semibold">Preguntas de humanos curiosos</h2>
+        <span class="text-xs font-black tracking-widest text-[#ffaa44] uppercase">Preguntas Frecuentes</span>
+        <h2 class="font-display mt-2 text-4xl font-black text-white">Dudas de humanos curiosos</h2>
         <div class="mt-6 space-y-3">
-          <details class="rounded-2xl border border-[#3b2a1e]/10 bg-white p-5 open:shadow-md">
-            <summary class="font-display flex items-center justify-between gap-3 text-lg font-semibold">¿Cómo funciona el clicker? <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff5c8a] text-white"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg></span></summary>
-            <p class="mt-3 text-sm leading-relaxed text-[#3b2a1e]/65">Presionas al gatito y se esconde en su caja con un clic satisfactorio, luego salta de vuelta. Es la versión física de lo que pruebas aquí en 3D.</p>
+          <details class="rounded-2xl border border-[#ff7518]/25 bg-[#170c26] p-5 open:border-[#ff7518]/60 transition">
+            <summary class="font-display flex items-center justify-between gap-3 text-lg font-bold text-white">
+              ¿Cómo funciona el Gato Calabaza y sus 3 caritas?
+              <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff7518] text-[#0d0714]">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+              </span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[#ffd9b3]/75">
+              El paquete incluye 1 calabaza base y 3 caritas de gato con distintas expresiones (Pícaro o.<, Travieso >.<, Curioso o.o). Puedes intercambiarlas con un suave clic mecánico. Al presionar la carita, se hunde y salta con un pop antiestrés idéntico al que probaste arriba.
+            </p>
           </details>
-          <details class="rounded-2xl border border-[#3b2a1e]/10 bg-white p-5 open:shadow-md">
-            <summary class="font-display flex items-center justify-between gap-3 text-lg font-semibold">¿El portacelular aguanta mi teléfono? <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff5c8a] text-white"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg></span></summary>
-            <p class="mt-3 text-sm leading-relaxed text-[#3b2a1e]/65">Sostiene la mayoría de celulares con o sin funda. La pancita tiene el ángulo justo para ver series o hacer videollamadas.</p>
+
+          <details class="rounded-2xl border border-[#ff7518]/25 bg-[#170c26] p-5 open:border-[#ff7518]/60 transition">
+            <summary class="font-display flex items-center justify-between gap-3 text-lg font-bold text-white">
+              ¿Lleva pilas o baterías?
+              <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff7518] text-[#0d0714]">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+              </span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[#ffd9b3]/75">
+              ¡Cero pilas ni baterías! Funciona 100% mecánicamente con un resorte táctil de alta durabilidad pensado para miles de clics diarios.
+            </p>
           </details>
-          <details class="rounded-2xl border border-[#3b2a1e]/10 bg-white p-5 open:shadow-md">
-            <summary class="font-display flex items-center justify-between gap-3 text-lg font-semibold">¿De qué están hechos? <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff5c8a] text-white"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg></span></summary>
-            <p class="mt-3 text-sm leading-relaxed text-[#3b2a1e]/65">De PLA+ premium impreso en 3D, con bordes suaves y acabado revisado a mano. Resistentes a caídas de escritorio y a abrazos fuertes.</p>
+
+          <details class="rounded-2xl border border-[#ff7518]/25 bg-[#170c26] p-5 open:border-[#ff7518]/60 transition">
+            <summary class="font-display flex items-center justify-between gap-3 text-lg font-bold text-white">
+              ¿De qué material está hecho?
+              <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff7518] text-[#0d0714]">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+              </span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[#ffd9b3]/75">
+              De PLA+ premium ecológico impreso en 3D con bordes redondeados y acabado manual sin rebabas. Es resistente a caídas de escritorio y agradable al tacto.
+            </p>
           </details>
-          <details class="rounded-2xl border border-[#3b2a1e]/10 bg-white p-5 open:shadow-md">
-            <summary class="font-display flex items-center justify-between gap-3 text-lg font-semibold">¿Cuánto tarda el envío? <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff5c8a] text-white"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg></span></summary>
-            <p class="mt-3 text-sm leading-relaxed text-[#3b2a1e]/65">Enviamos en 48 h a todo el país. Si tu michi llega con algún detalle, lo reponemos sin costo durante 15 días.</p>
+
+          <details class="rounded-2xl border border-[#ff7518]/25 bg-[#170c26] p-5 open:border-[#ff7518]/60 transition">
+            <summary class="font-display flex items-center justify-between gap-3 text-lg font-bold text-white">
+              ¿Cómo se intercambian las 3 caritas?
+              <span class="mas grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff7518] text-[#0d0714]">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+              </span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[#ffd9b3]/75">
+              ¡Es muy fácil! Cada carita se inserta y retira con un suave movimiento manual sobre el eje central de la calabaza, permitiéndote alternar entre Pícaro, Travieso y Curioso en cualquier momento.
+            </p>
           </details>
         </div>
       </div>
 
-      <div id="pedido" class="arco-gato-sm relative overflow-hidden border border-[#3b2a1e]/10 bg-[#3b2a1e] p-8 text-[#fff8ee] shadow-xl md:p-10">
-        <div class="huellas absolute inset-0 opacity-[.15] invert"></div>
+      <!-- FORMULARIO DE PEDIDO WHATSAPP -->
+      <div id="pedido" class="arco-gato-sm relative overflow-hidden border-2 border-[#ff7518]/50 bg-gradient-to-br from-[#1d0f33] via-[#150a24] to-[#0c0514] p-8 text-[#fff0db] shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_35px_rgba(255,117,24,0.25)] md:p-10">
+        <div class="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-[#ff7518]/25 blur-3xl"></div>
         <div class="relative">
-          <p class="inline-block rounded-full bg-[#ffb84d] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#3b2a1e]">ENVÍO EN 48 H</p>
-          <h3 class="font-display mt-4 text-4xl leading-tight font-semibold">Pide tu michi y empieza a clickear</h3>
-          <p class="mt-3 font-bold text-white/70">Déjanos tus datos y te escribimos por WhatsApp para confirmar tu pedido.</p>
-          <form class="mt-6 space-y-3" onsubmit="return false">
-            <input required placeholder="Tu nombre" class="w-full rounded-2xl border-2 border-white/10 bg-white/10 px-5 py-3.5 font-bold text-white outline-none placeholder:text-white/40 focus:border-[#ffb84d]" />
-            <input required type="tel" placeholder="WhatsApp" class="w-full rounded-2xl border-2 border-white/10 bg-white/10 px-5 py-3.5 font-bold text-white outline-none placeholder:text-white/40 focus:border-[#ffb84d]" />
-            <div class="grid grid-cols-2 gap-3">
-              <label class="flex cursor-pointer items-center gap-2 rounded-2xl border-2 border-[#ffb84d] bg-[#ffb84d]/15 px-4 py-3 text-sm font-extrabold">
-                <input type="radio" name="michi" checked class="accent-[#ff5c8a]" /> Mishi Clicker · S/ 7
+          <span class="inline-block rounded-full bg-[#ff7518] px-4 py-1.5 text-xs font-black tracking-widest text-[#0d0714]">
+            EDICIÓN ESPECIAL HALLOWEEN 🎃
+          </span>
+          <h3 class="font-display mt-4 text-3xl md:text-4xl leading-tight font-black text-white">
+            Elige tu Michi
+          </h3>
+          <p class="mt-2 text-sm font-bold text-[#ffd9b3]/75">
+            Selecciona tu modelo favorito y pídelo directamente por WhatsApp con un solo clic.
+          </p>
+
+          <form id="form-halloween" class="mt-6 space-y-4">
+            <fieldset class="space-y-2.5 pt-1 border-0 p-0 m-0">
+              <!-- Opción 1: Mishi Calabaza (Estrella) -->
+              <label for="michi-calabaza" data-radio-card class="flex cursor-pointer items-center justify-between rounded-2xl border-2 border-[#ff7518] bg-[#ff7518]/20 p-4 text-sm font-black transition hover:border-white/30 has-[:checked]:border-[#ff7518] has-[:checked]:bg-[#ff7518]/20 has-[:checked]:shadow-[0_0_20px_rgba(255,117,24,0.3)]">
+                <span class="flex items-center gap-3">
+                  <input id="michi-calabaza" type="radio" name="michi" value="calabaza" checked class="accent-[#ff7518] h-4 w-4" />
+                  <span>🎃 Mishi Calabaza (1 Calabaza + 3 Caritas)</span>
+                </span>
+                <span class="text-[#ffaa44] text-base font-black">S/ 9</span>
               </label>
-              <label class="flex cursor-pointer items-center gap-2 rounded-2xl border-2 border-white/15 bg-white/5 px-4 py-3 text-sm font-extrabold">
-                <input type="radio" name="michi" class="accent-[#ff5c8a]" /> Portacelular · S/ 10
+
+              <!-- Opción 2: Mishi Caja Clásico -->
+              <label for="michi-caja" data-radio-card class="flex cursor-pointer items-center justify-between rounded-2xl border-2 border-white/10 bg-[#150a24]/60 p-4 text-sm font-black transition hover:border-white/30 has-[:checked]:border-[#ff7518] has-[:checked]:bg-[#ff7518]/20 has-[:checked]:shadow-[0_0_20px_rgba(255,117,24,0.3)]">
+                <span class="flex items-center gap-3">
+                  <input id="michi-caja" type="radio" name="michi" value="caja" class="accent-[#ff7518] h-4 w-4" />
+                  <span>📦 Mishi en su Caja Clicker</span>
+                </span>
+                <span class="text-purple-300 text-base font-black">S/ 7</span>
               </label>
-            </div>
-            <button class="w-full rounded-2xl bg-[#ff5c8a] py-4 font-display text-xl font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-2xl hover:brightness-110 active:scale-[.99]">
-              Pedir por WhatsApp
+
+              <!-- Opción 3: Combo Halloween Dúo -->
+              <label for="michi-combo" data-radio-card class="flex cursor-pointer items-center justify-between rounded-2xl border-2 border-white/10 bg-[#150a24]/60 p-4 text-sm font-black transition hover:border-white/30 has-[:checked]:border-[#ff7518] has-[:checked]:bg-[#ff7518]/20 has-[:checked]:shadow-[0_0_20px_rgba(255,117,24,0.3)]">
+                <span class="flex items-center gap-3">
+                  <input id="michi-combo" type="radio" name="michi" value="combo" class="accent-[#ff7518] h-4 w-4" />
+                  <span>✨ Combo Dúo (Calabaza + Caja)</span>
+                </span>
+                <span class="text-[#2ee6a8] text-base font-black">S/ 15</span>
+              </label>
+            </fieldset>
+
+            <button
+              type="submit"
+              class="w-full mt-3 rounded-2xl bg-gradient-to-r from-[#ff7518] via-[#ffa733] to-[#ff5500] py-4 font-display text-lg font-black text-[#0d0714] shadow-[0_0_25px_rgba(255,117,24,0.5)] transition hover:-translate-y-0.5 hover:brightness-110 active:scale-[.99] cursor-pointer"
+            >
+              Pedir por WhatsApp 🎃
             </button>
-            <p class="text-center text-xs font-bold text-white/50">Pago a la entrega · garantía de 15 días</p>
           </form>
         </div>
       </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="relative z-10 border-t border-[#3b2a1e]/10 bg-[#3b2a1e] text-[#fff8ee]">
+    <footer class="relative z-10 border-t border-[#ff7518]/20 bg-[#09040e] text-[#fff0db]">
       <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-5 py-10 md:px-8">
         <div class="flex items-center gap-3">
-          <span class="grid h-11 w-11 place-items-center rounded-2xl bg-[#fff8ee] text-2xl">🐱</span>
+          <span class="grid h-11 w-11 place-items-center rounded-2xl bg-[#ff7518] text-2xl text-[#0d0714] shadow-[0_0_15px_rgba(255,117,24,0.4)]">
+            🎃
+          </span>
           <div>
-            <p class="font-display text-xl font-semibold">Felynez</p>
-            <p class="text-xs font-bold text-white/50">Diseñado e impreso en 3D · Perú</p>
+            <p class="font-display text-xl font-black text-white">Felynez</p>
+            <p class="text-xs font-bold text-[#ffd9b3]/60">Diseñado e impreso en 3D · Especial Halloween</p>
           </div>
         </div>
-        <div class="flex gap-6 text-sm font-bold text-white/60">
-          <a href="#manada" class="hover:text-white">Michis</a>
-          <a href="#visor" class="hover:text-white">Pruébalo</a>
-          <a href="#como-funciona" class="hover:text-white">Cómo funciona</a>
-          <a href="#pedido" class="hover:text-white">Pedido</a>
+
+        <div class="flex gap-6 text-sm font-black text-[#ffd9b3]/70">
+          <a href="#manada" class="hover:text-[#ff7518] transition">Michis</a>
+          <a href="#calabaza-visor" class="hover:text-[#ff7518] transition">Calabaza 3D</a>
+          <a href="#como-funciona" class="hover:text-[#ff7518] transition">Cómo funciona</a>
+          <a href="#pedido" class="hover:text-[#ff7518] transition">Hacer Pedido</a>
         </div>
-        <p class="w-full text-center text-xs text-white/35 md:w-auto">© 2026 Felynez · Todos los clics reservados</p>
+
+        <p class="w-full text-center text-xs text-[#ffd9b3]/40 md:w-auto">
+          © Felynez · Todos los sustitos y clics reservados 🐾
+        </p>
       </div>
     </footer>
   </div>
 </Layout>
+
+<script>
+  // Resaltado dinámico de la tarjeta seleccionada
+  const radioCards = document.querySelectorAll("[data-radio-card]");
+  function actualizarResaltado() {
+    radioCards.forEach((card) => {
+      const radio = card.querySelector('input[type="radio"]') as HTMLInputElement | null;
+      if (radio && radio.checked) {
+        card.classList.add("border-[#ff7518]", "bg-[#ff7518]/20", "shadow-[0_0_20px_rgba(255,117,24,0.3)]");
+        card.classList.remove("border-white/10", "bg-[#150a24]/60");
+      } else {
+        card.classList.remove("border-[#ff7518]", "bg-[#ff7518]/20", "shadow-[0_0_20px_rgba(255,117,24,0.3)]");
+        card.classList.add("border-white/10", "bg-[#150a24]/60");
+      }
+    });
+  }
+
+  document.querySelectorAll('input[name="michi"]').forEach((r) => {
+    r.addEventListener("change", actualizarResaltado);
+  });
+  actualizarResaltado();
+
+  // Enlace interactivo con WhatsApp API
+  const form = document.getElementById("form-halloween") as HTMLFormElement | null;
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const seleccion = (fd.get("michi") as string) || "calabaza";
+
+      let mensaje = "";
+      if (seleccion === "calabaza") {
+        mensaje = "¡Hola! 🎃 Me interesa pedir el Mishi Calabaza (1 calabaza + 3 caritas intercambiables) por S/ 9. ¿Tienen disponible?";
+      } else if (seleccion === "caja") {
+        mensaje = "¡Hola! 📦 Me interesa pedir el Mishi en su Caja Clicker por S/ 7. ¿Tienen disponible?";
+      } else if (seleccion === "combo") {
+        mensaje = "¡Hola! ✨ Me interesa pedir el Combo Dúo Embrujado (Mishi Calabaza con 3 caritas + Mishi en su Caja) por S/ 15. ¿Tienen disponible?";
+      } else {
+        mensaje = "¡Hola! 🎃 Me interesa pedir un michi de Halloween. ¿Tienen disponible?";
+      }
+
+      const url = `https://api.whatsapp.com/send?phone=51933468699&text=${encodeURIComponent(mensaje)}`;
+      window.open(url, "_blank");
+    });
+  }
+</script>
