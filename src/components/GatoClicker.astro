@@ -190,22 +190,50 @@ const {
       }
     }
 
-    // --- Sonido pop ---
+    // --- Sonido de clicker mecánico agradable (bajada + rebote) ---
     let audioCtx = null;
     function pop() {
       try {
         audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume();
         const t = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(420 + Math.random() * 120, t);
-        osc.frequency.exponentialRampToValueAtTime(980, t + 0.09);
-        gain.gain.setValueAtTime(0.18, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
-        osc.connect(gain).connect(audioCtx.destination);
-        osc.start(t);
-        osc.stop(t + 0.18);
+
+        function golpeSwitch(at, freqClick, freqThock, vol) {
+          // 1. Clic nítido del switch (ruido filtrado muy corto)
+          const len = Math.floor(audioCtx.sampleRate * 0.016);
+          const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < len; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.25));
+          }
+          const noise = audioCtx.createBufferSource();
+          noise.buffer = buf;
+          const bp = audioCtx.createBiquadFilter();
+          bp.type = "bandpass";
+          bp.frequency.setValueAtTime(freqClick, at);
+          bp.Q.setValueAtTime(1.8, at);
+          const ng = audioCtx.createGain();
+          ng.gain.setValueAtTime(vol * 0.85, at);
+          ng.gain.exponentialRampToValueAtTime(0.001, at + 0.016);
+          noise.connect(bp).connect(ng).connect(audioCtx.destination);
+          noise.start(at);
+
+          // 2. Cuerpo táctil suave ("thock" de la carcasa)
+          const osc = audioCtx.createOscillator();
+          const og = audioCtx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freqThock, at);
+          osc.frequency.exponentialRampToValueAtTime(75, at + 0.038);
+          og.gain.setValueAtTime(vol * 0.55, at);
+          og.gain.exponentialRampToValueAtTime(0.001, at + 0.042);
+          osc.connect(og).connect(audioCtx.destination);
+          osc.start(at);
+          osc.stop(at + 0.045);
+        }
+
+        const jitter = (Math.random() - 0.5) * 180;
+        golpeSwitch(t, 2400 + jitter, 210, 0.32);         // Clic al presionar
+        golpeSwitch(t + 0.14, 3200 + jitter, 280, 0.22);  // Rebote del resorte
       } catch (e) {}
     }
 
