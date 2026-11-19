@@ -135,7 +135,6 @@ export const POST: APIRoute = async ({ request }) => {
     model: MODEL_ID,
     system_instruction: SYSTEM_PROMPT,
     input: fullInput,
-    response_mime_type: "application/json",
   };
 
   try {
