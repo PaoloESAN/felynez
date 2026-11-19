@@ -20,57 +20,57 @@ const {
   data-clicker
   data-caja={cajaSrc}
   data-gato={gatoSrc}
-  class:list={["group relative w-full overflow-hidden rounded-[30px] border border-purple-500/30 bg-gradient-to-b from-[#180f2b] via-[#120a20] to-[#0a0512] select-none shadow-[0_20px_60px_rgba(0,0,0,0.6)]", alto]}
+  class:list={["group relative w-full overflow-hidden rounded-[28px] border border-[#3b2a1e]/10 bg-gradient-to-b from-[#f7e9cf] to-[#e9c896] select-none", alto]}
 >
   <canvas class="block h-full w-full touch-none cursor-grab active:cursor-grabbing" aria-label={"Juego clicker 3D de " + nombre + ". Clickea al gato"}></canvas>
 
-  <!-- Halo de luz misteriosa -->
-  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_50%_at_50%_40%,rgba(168,85,247,0.2),transparent_70%),radial-gradient(40%_40%_at_20%_80%,rgba(255,117,24,0.18),transparent_70%)]"></div>
+  <!-- halo -->
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_38%,rgba(255,92,138,0.22),transparent_70%),radial-gradient(50%_40%_at_70%_80%,rgba(124,92,255,0.25),transparent_70%)]"></div>
 
   <!-- Marcador de caricias -->
-  <div class="absolute top-3.5 right-3.5 left-3.5 z-20 flex items-center justify-between gap-2 pointer-events-none">
-    <div class="flex items-center gap-2 rounded-full border border-purple-500/30 bg-[#160d24]/85 px-3.5 py-1.5 shadow-[0_4px_20px_rgba(168,85,247,0.15)] backdrop-blur-md">
-      <span class="text-base sm:text-lg">📦</span>
-      <span class="font-display text-base font-bold text-[#ff9e3b] sm:text-lg" data-count>0</span>
-      <span class="text-[10px] sm:text-xs font-black tracking-widest text-[#ffeedd]/70 uppercase">Caricias</span>
+  <div class="absolute top-3 right-3 left-3 z-20 flex items-center justify-between gap-2 pointer-events-none">
+    <div class="flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-3 py-1.5 shadow-sm backdrop-blur-md sm:px-4 sm:py-2">
+      <span class="text-base sm:text-lg">🐾</span>
+      <span class="font-display text-base font-semibold text-[#b45309] sm:text-lg" data-count>0</span>
+      <span class="hidden text-xs font-extrabold tracking-widest text-[#3b2a1e]/60 min-[420px]:inline">CARICIAS</span>
     </div>
 
-    <div class="flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-[#1c0f33]/80 px-3 py-1 text-[11px] font-bold text-amber-200 backdrop-blur-md">
-      <span class="text-xs">🐾</span>
+    <div class="flex items-center gap-1.5 rounded-full border border-black/10 bg-white/80 px-3 py-1 text-[11px] font-bold text-[#3b2a1e]/75 shadow-sm backdrop-blur-md">
+      <span class="text-xs">📦</span>
       <span>{subtitulo}</span>
     </div>
   </div>
 
   <!-- Botón de acariciar -->
-  <div class="absolute right-3.5 bottom-3.5 z-20">
+  <div class="absolute right-3 bottom-3 z-20">
     <button
       type="button"
       data-btn-acariciar
-      class="group/btn flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-[#ff7518] px-5 py-2.5 text-xs font-black text-white shadow-[0_8px_25px_rgba(168,85,247,0.35)] transition-all hover:scale-105 hover:brightness-110 active:scale-95 cursor-pointer"
+      class="group/btn flex items-center gap-2 rounded-full bg-[#3b2a1e] px-5 py-2 text-xs font-extrabold text-[#fff8ee] shadow-[0_8px_24px_rgba(59,42,30,.35)] transition hover:brightness-125 active:scale-95 cursor-pointer"
     >
       <span>¡Acariciar!</span>
-      <span class="text-base group-hover/btn:rotate-12 transition-transform">🐾</span>
+      <span class="text-base group-hover/btn:rotate-12 transition-transform">💛</span>
     </button>
   </div>
 
   <!-- Estado de carga -->
-  <div data-carga class="absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 bg-[#12091d]/95 backdrop-blur-md text-[#fff0db] transition-opacity duration-500">
+  <div data-carga class="absolute inset-0 z-30 flex flex-col items-center justify-center gap-4 bg-[#f3e2c7]/90 backdrop-blur-sm transition-opacity duration-500">
     <div class="relative">
-      <svg width="80" height="80" viewBox="0 0 88 88" class="animate-[giro_2.2s_linear_infinite]">
-        <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(168,85,247,0.2)" stroke-width="6" />
-        <path d="M44 8 a36 36 0 0 1 31 18" fill="none" stroke="#a855f7" stroke-width="6" stroke-linecap="round" />
+      <svg width="88" height="88" viewBox="0 0 88 88" class="animate-[giro_2.4s_linear_infinite]">
+        <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(59,42,30,.15)" stroke-width="7" />
+        <path d="M44 8 a36 36 0 0 1 31 18" fill="none" stroke="#ff5c8a" stroke-width="7" stroke-linecap="round" />
       </svg>
-      <div class="absolute inset-0 grid place-items-center text-3xl animate-bounce">📦</div>
+      <div class="absolute inset-0 grid place-items-center text-3xl">📦</div>
     </div>
-    <p class="font-display text-lg font-bold text-[#ffaa55]" data-carga-txt>Armando la cajita…</p>
-    <p class="text-xs text-[#ffeedd]/60">el michi ya viene en camino</p>
+    <p class="font-display text-lg text-[#3b2a1e]" data-carga-txt>Armando la cajita…</p>
+    <p class="text-sm text-[#3b2a1e]/60">el michi ya viene en camino</p>
   </div>
 
   <!-- Error -->
-  <div data-error class="absolute inset-0 z-30 hidden flex-col items-center justify-center gap-3 bg-[#12091d] p-8 text-center text-[#fff0db]">
+  <div data-error class="absolute inset-0 z-30 hidden flex-col items-center justify-center gap-3 bg-[#f3e2c7] p-8 text-center">
     <div class="text-5xl">😿</div>
-    <p class="font-display text-xl font-bold text-[#ffaa55]">El michi se escondió muy bien</p>
-    <p class="max-w-xs text-xs text-[#ffeedd]/60">No pudimos cargar la caja o el gato. Revisa tu conexión e inténtalo de nuevo.</p>
+    <p class="font-display text-xl text-[#3b2a1e]">El michi se escondió muy bien</p>
+    <p class="max-w-xs text-sm text-[#3b2a1e]/60">No pudimos cargar la caja o el gato. Revisa tu conexión e inténtalo de nuevo.</p>
   </div>
 </div>
 
@@ -115,7 +115,7 @@ const {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x130a20, 0.04);
+    scene.fog = new THREE.FogExp2(0xf0d9b4, 0.04);
 
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 60);
     const CAM_HOME = new THREE.Vector3(0.7, 2.1, 5.6);
@@ -134,24 +134,24 @@ const {
     controls.autoRotate = !reduceMotion;
     controls.autoRotateSpeed = 1.2;
 
-    scene.add(new THREE.HemisphereLight(0xfff6e9, 0x1d1130, 0.95));
-    const key = new THREE.DirectionalLight(0xffe9c4, 2.5);
+    scene.add(new THREE.HemisphereLight(0xfff6e9, 0x8a6f4d, 1.1));
+    const key = new THREE.DirectionalLight(0xffe9c4, 2.4);
     key.position.set(3.5, 6, 4);
     key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024);
     scene.add(key);
 
-    const rimPurpura = new THREE.PointLight(0xa855f7, 26, 22);
-    rimPurpura.position.set(-3.5, 2.4, -2.5);
-    scene.add(rimPurpura);
+    const rimRosa = new THREE.PointLight(0xff5c8a, 26, 22);
+    rimRosa.position.set(-3.5, 2.4, -2.5);
+    scene.add(rimRosa);
 
-    const fillNaranja = new THREE.PointLight(0xff7518, 22, 22);
-    fillNaranja.position.set(3, 1.4, -3);
-    scene.add(fillNaranja);
+    const fillLila = new THREE.PointLight(0x7c5cff, 20, 22);
+    fillLila.position.set(3, 1.4, -3);
+    scene.add(fillLila);
 
     const alfombra = new THREE.Mesh(
       new THREE.CircleGeometry(2.2, 64),
-      new THREE.MeshStandardMaterial({ color: 0x1d102e, roughness: 0.9, metalness: 0.1 })
+      new THREE.MeshStandardMaterial({ color: 0xc99e67, roughness: 0.95, metalness: 0 })
     );
     alfombra.rotation.x = -Math.PI / 2;
     alfombra.receiveShadow = true;
@@ -159,7 +159,7 @@ const {
 
     const aro = new THREE.Mesh(
       new THREE.RingGeometry(2.2, 2.32, 64),
-      new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.65, side: THREE.DoubleSide })
+      new THREE.MeshBasicMaterial({ color: 0xffb84d, transparent: true, opacity: 0.55, side: THREE.DoubleSide })
     );
     aro.rotation.x = -Math.PI / 2;
     aro.position.y = 0.01;
@@ -168,7 +168,7 @@ const {
     // --- Festejo ---
     const FESTEJO_N = 26;
     const festejo = [];
-    const texturas = [emojiTexture("🐾"), emojiTexture("✨"), emojiTexture("🎃"), emojiTexture("💜")];
+    const texturas = [emojiTexture("💗"), emojiTexture("🐾"), emojiTexture("✨")];
     for (let i = 0; i < FESTEJO_N; i++) {
       const mat = new THREE.SpriteMaterial({ map: texturas[i % texturas.length], transparent: true, opacity: 0, depthWrite: false });
       const s = new THREE.Sprite(mat);
