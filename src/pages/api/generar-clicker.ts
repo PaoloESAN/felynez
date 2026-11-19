@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 
 export const prerender = false;
 
-const MODEL_ID = "gemini-3.8-flash";
+const MODEL_ID = "gemini-4-hydrogen";
 
 const SYSTEM_PROMPT = `Eres el diseñador 3D de Felynez (taller de juguetes gatunos antiestrés impresos en 3D).
 Tu trabajo es conversar con el usuario en español y generar o modificar un **Clicker 3D** en tiempo real devolviendo SIEMPRE un JSON válido con esta estructura exacta:
@@ -79,9 +79,23 @@ async function callGemini(apiKey: string, body: unknown): Promise<Response> {
 }
 
 function extractTextFromResponse(data: any): string | undefined {
-  if (Array.isArray(data?.outputs)) {
-    for (let i = data.outputs.length - 1; i >= 0; i--) {
-      const out = data.outputs[i];
+  const items = Array.isArray(data?.outputs)
+    ? data.outputs
+    : Array.isArray(data?.steps)
+      ? data.steps
+      : null;
+
+  if (items) {
+    for (let i = items.length - 1; i >= 0; i--) {
+      const out = items[i];
+      if (Array.isArray(out?.content)) {
+        for (let j = out.content.length - 1; j >= 0; j--) {
+          const part = out.content[j];
+          if (typeof part?.text === "string" && part.text.trim()) {
+            return part.text;
+          }
+        }
+      }
       if (typeof out?.text === "string" && out.text.trim()) {
         return out.text;
       }
