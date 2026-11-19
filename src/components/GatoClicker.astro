@@ -190,7 +190,7 @@ const {
       }
     }
 
-    // --- Sonido de teclado mecánico (click-clack nítido y con buen volumen) ---
+    // --- Sonido suave y nítido de switch mecánico ("click-clack" sin "bumb") ---
     let audioCtx = null;
     function pop() {
       try {
@@ -198,68 +198,53 @@ const {
         if (audioCtx.state === "suspended") audioCtx.resume();
         const t = audioCtx.currentTime;
 
-        const master = audioCtx.createDynamicsCompressor();
-        master.threshold.setValueAtTime(-12, t);
-        master.ratio.setValueAtTime(4, t);
         const masterGain = audioCtx.createGain();
-        masterGain.gain.setValueAtTime(1.35, t);
-        master.connect(masterGain).connect(audioCtx.destination);
+        masterGain.gain.setValueAtTime(0.95, t);
+        masterGain.connect(audioCtx.destination);
 
-        function teclaMecanica(at, clickFreq, thockStart, thockEnd, vol) {
-          // 1. Transiente agudo del switch ("click" metálico/plástico de 7ms)
-          const len = Math.floor(audioCtx.sampleRate * 0.014);
+        function clickSwitch(at, clickFreq, tapStart, tapEnd, vol) {
+          // 1. Clic plástico/metálico nítido y corto (9ms, sin graves)
+          const len = Math.floor(audioCtx.sampleRate * 0.011);
           const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
           const data = buf.getChannelData(0);
           for (let i = 0; i < len; i++) {
-            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.16));
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.22));
           }
           const noise = audioCtx.createBufferSource();
           noise.buffer = buf;
 
           const hp = audioCtx.createBiquadFilter();
           hp.type = "highpass";
-          hp.frequency.setValueAtTime(1600, at);
+          hp.frequency.setValueAtTime(1400, at);
 
           const bp = audioCtx.createBiquadFilter();
           bp.type = "bandpass";
           bp.frequency.setValueAtTime(clickFreq, at);
-          bp.Q.setValueAtTime(2.2, at);
+          bp.Q.setValueAtTime(1.6, at);
 
           const ng = audioCtx.createGain();
-          ng.gain.setValueAtTime(vol * 1.15, at);
-          ng.gain.exponentialRampToValueAtTime(0.001, at + 0.013);
+          ng.gain.setValueAtTime(vol * 0.95, at);
+          ng.gain.exponentialRampToValueAtTime(0.001, at + 0.01);
 
-          noise.connect(hp).connect(bp).connect(ng).connect(master);
+          noise.connect(hp).connect(bp).connect(ng).connect(masterGain);
           noise.start(at);
 
-          // 2. Golpe sólido de la tecla ("thock" en la base)
+          // 2. Toque mecánico muy ligero y seco (10ms, sin "bumb" grave)
           const osc = audioCtx.createOscillator();
           const og = audioCtx.createGain();
           osc.type = "triangle";
-          osc.frequency.setValueAtTime(thockStart, at);
-          osc.frequency.exponentialRampToValueAtTime(thockEnd, at + 0.024);
-          og.gain.setValueAtTime(vol * 0.85, at);
-          og.gain.exponentialRampToValueAtTime(0.001, at + 0.028);
-          osc.connect(og).connect(master);
+          osc.frequency.setValueAtTime(tapStart, at);
+          osc.frequency.exponentialRampToValueAtTime(tapEnd, at + 0.01);
+          og.gain.setValueAtTime(vol * 0.24, at);
+          og.gain.exponentialRampToValueAtTime(0.001, at + 0.012);
+          osc.connect(og).connect(masterGain);
           osc.start(at);
-          osc.stop(at + 0.03);
-
-          // 3. Sub-cuerpo corto para dar presencia
-          const body = audioCtx.createOscillator();
-          const bg = audioCtx.createGain();
-          body.type = "sine";
-          body.frequency.setValueAtTime(155, at);
-          body.frequency.exponentialRampToValueAtTime(65, at + 0.022);
-          bg.gain.setValueAtTime(vol * 0.55, at);
-          bg.gain.exponentialRampToValueAtTime(0.001, at + 0.025);
-          body.connect(bg).connect(master);
-          body.start(at);
-          body.stop(at + 0.028);
+          osc.stop(at + 0.014);
         }
 
-        const jitter = (Math.random() - 0.5) * 240;
-        teclaMecanica(t, 3900 + jitter, 340, 95, 0.85);          // Bajada ("click")
-        teclaMecanica(t + 0.115, 4700 + jitter, 420, 130, 0.58); // Subida ("clack")
+        const jitter = (Math.random() - 0.5) * 200;
+        clickSwitch(t, 3100 + jitter, 680, 290, 0.72);          // Bajada ("click")
+        clickSwitch(t + 0.095, 4100 + jitter, 820, 360, 0.45);  // Subida ("clack" suave)
       } catch (e) {}
     }
 
