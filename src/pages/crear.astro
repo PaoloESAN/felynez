@@ -399,7 +399,7 @@ import Layout from "../layouts/Layout.astro";
     }
   }
 
-  // Sonido de clicker mecánico agradable (bajada + rebote)
+  // Sonido de teclado mecánico (click-clack nítido y con buen volumen)
   let audioCtx = null;
   function pop() {
     try {
@@ -407,40 +407,65 @@ import Layout from "../layouts/Layout.astro";
       if (audioCtx.state === "suspended") audioCtx.resume();
       const t = audioCtx.currentTime;
 
-      function golpeSwitch(at, freqClick, freqThock, vol) {
-        const len = Math.floor(audioCtx.sampleRate * 0.016);
+      const master = audioCtx.createDynamicsCompressor();
+      master.threshold.setValueAtTime(-12, t);
+      master.ratio.setValueAtTime(4, t);
+      const masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(1.35, t);
+      master.connect(masterGain).connect(audioCtx.destination);
+
+      function teclaMecanica(at, clickFreq, thockStart, thockEnd, vol) {
+        const len = Math.floor(audioCtx.sampleRate * 0.014);
         const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
         const data = buf.getChannelData(0);
         for (let i = 0; i < len; i++) {
-          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.25));
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.16));
         }
         const noise = audioCtx.createBufferSource();
         noise.buffer = buf;
+
+        const hp = audioCtx.createBiquadFilter();
+        hp.type = "highpass";
+        hp.frequency.setValueAtTime(1600, at);
+
         const bp = audioCtx.createBiquadFilter();
         bp.type = "bandpass";
-        bp.frequency.setValueAtTime(freqClick, at);
-        bp.Q.setValueAtTime(1.8, at);
+        bp.frequency.setValueAtTime(clickFreq, at);
+        bp.Q.setValueAtTime(2.2, at);
+
         const ng = audioCtx.createGain();
-        ng.gain.setValueAtTime(vol * 0.85, at);
-        ng.gain.exponentialRampToValueAtTime(0.001, at + 0.016);
-        noise.connect(bp).connect(ng).connect(audioCtx.destination);
+        ng.gain.setValueAtTime(vol * 1.15, at);
+        ng.gain.exponentialRampToValueAtTime(0.001, at + 0.013);
+
+        noise.connect(hp).connect(bp).connect(ng).connect(master);
         noise.start(at);
 
         const osc = audioCtx.createOscillator();
         const og = audioCtx.createGain();
         osc.type = "triangle";
-        osc.frequency.setValueAtTime(freqThock, at);
-        osc.frequency.exponentialRampToValueAtTime(75, at + 0.038);
-        og.gain.setValueAtTime(vol * 0.55, at);
-        og.gain.exponentialRampToValueAtTime(0.001, at + 0.042);
-        osc.connect(og).connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(thockStart, at);
+        osc.frequency.exponentialRampToValueAtTime(thockEnd, at + 0.024);
+        og.gain.setValueAtTime(vol * 0.85, at);
+        og.gain.exponentialRampToValueAtTime(0.001, at + 0.028);
+        osc.connect(og).connect(master);
         osc.start(at);
-        osc.stop(at + 0.045);
+        osc.stop(at + 0.03);
+
+        const body = audioCtx.createOscillator();
+        const bg = audioCtx.createGain();
+        body.type = "sine";
+        body.frequency.setValueAtTime(155, at);
+        body.frequency.exponentialRampToValueAtTime(65, at + 0.022);
+        bg.gain.setValueAtTime(vol * 0.55, at);
+        bg.gain.exponentialRampToValueAtTime(0.001, at + 0.025);
+        body.connect(bg).connect(master);
+        body.start(at);
+        body.stop(at + 0.028);
       }
 
-      const jitter = (Math.random() - 0.5) * 180;
-      golpeSwitch(t, 2400 + jitter, 210, 0.32);
-      golpeSwitch(t + 0.14, 3200 + jitter, 280, 0.22);
+      const jitter = (Math.random() - 0.5) * 240;
+      teclaMecanica(t, 3900 + jitter, 340, 95, 0.85);
+      teclaMecanica(t + 0.115, 4700 + jitter, 420, 130, 0.58);
     } catch {}
   }
 
